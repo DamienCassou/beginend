@@ -1,0 +1,11 @@
+# Generated files
+*.elc
+*-pkg.el
+*.tar
+TAGS
+doc/beginend.texi
+doc/beginend.info
+
+# Packages
+.cask
+elpa
