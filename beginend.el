@@ -2,7 +2,7 @@
 
 ;; Copyright (C) 2015 Damien Cassou
 
-;; Author: Damien Cassou <damien.cassou@inria.fr>
+;; Author: Damien Cassou <damien@cassou.me>
 ;; Version: 0.1
 
 ;; This file is not part of GNU Emacs.
