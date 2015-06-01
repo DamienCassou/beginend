@@ -84,17 +84,17 @@
   "Go to the beginning of a dired buffer, after `.' and `..'."
   (interactive)
   (goto-char (point-min))
-  (let ((move 1))
+  (let ((move 4))
     (when (and (boundp 'dired-omit-mode) dired-omit-mode)
       ;; dired-omit-mode hides `.' and `..'.
-      (setf move (+ 2 move)))
+      (setf move (- move 2)))
     (when (and (boundp 'dired-hide-details-hide-information-lines)
-               dired-hide-details-hide-information-lines)
-      (setf move (1- move)))
-    (dired-next-line (if (and (boundp 'dired-omit-mode)
-                              dired-omit-mode)
-                         1
-                       4))))
+               dired-hide-details-hide-information-lines
+               (boundp 'dired-hide-details-mode)
+               dired-hide-details-mode)
+      ;; 1 line containing directory size
+      (setf move (- move 1)))
+    (dired-next-line move)))
 
 (defun beginend-dired-goto-end ()
   "Go to the end of a dired buffer, before the empty line."
