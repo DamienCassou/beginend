@@ -45,6 +45,7 @@
 (eval-when-compile
   (defvar message-mode-map)
   (defvar mu4e-view-mode-map)
+  (defvar mu4e-compose-mode-map)
   (defvar dired-mode-map))
 
 (defun beginend--defkey (map command-begin command-end)
@@ -95,12 +96,17 @@
 (with-eval-after-load "message"
   (beginend--defkey message-mode-map
                     #'beginend-message-goto-beginning
-                    #'beginend-message-goto-end)
+                    #'beginend-message-goto-end))
 
-  (with-eval-after-load "mu4e-view"
-    (beginend--defkey mu4e-view-mode-map
-                      #'beginend-message-goto-beginning
-                      #'beginend-message-goto-end)))
+(with-eval-after-load "mu4e-view"
+  (beginend--defkey mu4e-view-mode-map
+                    #'beginend-message-goto-beginning
+                    #'beginend-message-goto-end))
+
+(with-eval-after-load "mu4e-compose"
+  (beginend--defkey mu4e-compose-mode-map
+                    #'beginend-message-goto-beginning
+                    #'beginend-message-goto-end))
 
 
 
