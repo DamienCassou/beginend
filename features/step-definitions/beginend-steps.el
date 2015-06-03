@@ -60,13 +60,6 @@
            (looking-back string)
            nil message string (word-at-point)))))
 
-(Then "^I should be at line \\([0-9]+\\)$"
-      (lambda (line)
-        (let ((message "Should be at line '%s' but is at line '%s'"))
-          (cl-assert
-           (equal (string-to-int line) (line-number-at-pos))
-           nil message line (line-number-at-pos)))))
-
 (Then "^I should be at beginning of buffer$"
       (lambda ()
         (cl-assert
