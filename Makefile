@@ -27,6 +27,7 @@ check : deps
 	$(patsubst %,-l % , $(SRCS))\
 	$(patsubst %,-l % , $(TESTS))\
 	-f ert-run-tests-batch-and-exit
+	cask exec ecukes
 
 install : $(TAR)
 	$(EMACSBATCH) -l package -f package-initialize \
