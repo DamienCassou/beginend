@@ -41,6 +41,7 @@
 
 ;; Avoid warnings about undefined variables and functions
 (declare-function message-goto-body "message")
+(declare-function dired-next-line "dired")
 (eval-when-compile
   (defvar message-mode-map)
   (defvar mu4e-view-mode-map)

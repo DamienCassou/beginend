@@ -76,8 +76,8 @@
 (Then "^I should be at end of buffer$"
       (lambda ()
         (cl-assert
-         (eobp))
-        nil "Is not at the end of the buffer"))
+         (eobp)
+         nil "Is not at the end of the buffer")))
 
 (provide 'beginend-steps)
 
