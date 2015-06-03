@@ -64,7 +64,7 @@
       (lambda (line)
         (let ((message "Should be at line '%s' but is at line '%s'"))
           (cl-assert
-           (equal line (line-number-at-pos))
+           (equal (string-to-int line) (line-number-at-pos))
            nil message line (line-number-at-pos)))))
 
 (Then "^I should be at beginning of buffer$"
