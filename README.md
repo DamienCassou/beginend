@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/DamienCassou/beginend.svg?branch=master)](https://travis-ci.org/DamienCassou/beginend)
+
 # beginend
 
 ## Summary
