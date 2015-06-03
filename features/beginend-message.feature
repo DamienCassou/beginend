@@ -10,7 +10,6 @@ Feature: When in message mode, begin and end are changed
     Given I press "M-<"
     Then I should be before "Hello,"
     Given I press "M->"
-    And I press "C-e"
     Then I should be after "Bye,"
 
   Scenario: Press M-< or M-> twice

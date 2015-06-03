@@ -60,21 +60,15 @@
 (defun beginend-message-goto-beginning ()
   "Go to the beginning of an email, after the headers."
   (interactive)
-  (let ((old-position (point)))
-    (message-goto-body)
-    (when (equal (point) old-position)
-      (call-interactively #'beginning-of-buffer))))
+  (message-goto-body))
 
 (defun beginend-message-goto-end ()
   "Go to the end of an email, before the signature."
   (interactive)
-  (let ((old-position (point))
-        (message-position (save-excursion (message-goto-body) (point))))
-    (call-interactively #'end-of-buffer)
-    (when (re-search-backward "^-- $" message-position t)
-      (call-interactively #'previous-line))
-    (when (equal (point) old-position)
-      (call-interactively #'end-of-buffer))))
+  (call-interactively #'end-of-buffer)
+  (when (re-search-backward "^-- $" nil t)
+    (re-search-backward "[^[:space:]]" nil t)
+    (forward-char)))
 
 (with-eval-after-load "message"
   (beginend--defkey message-mode-map
@@ -110,7 +104,8 @@
   "Go to the end of a dired buffer, before the empty line."
   (interactive)
   (goto-char (point-max))
-  (dired-next-line -1))
+  (re-search-backward "[^[:space:]]" nil t)
+  (forward-char))
 
 (with-eval-after-load "dired"
   (beginend--defkey dired-mode-map
