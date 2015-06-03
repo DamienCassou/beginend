@@ -18,6 +18,14 @@
          (dired beginend--test-tempdir)
          ))
 
+(Given "^I setup a message$"
+       (lambda ()
+         (let ((buffer (generate-new-buffer "*beginend*")))
+           (switch-to-buffer buffer)
+           (insert "From: someaddresse@foo.com\n\n")
+           (insert "Hello,\n\nBye,\n-- \nSome signature\n")
+           (message-mode))))
+
 (Given "^I activate dired-omit-mode$"
        (lambda ()
          (require 'dired-x)
@@ -38,6 +46,12 @@
      (lambda ()
        (dired-hide-details-mode)))
 
+(Then "^I should be before \"\\([^\"]+\\)\"$"
+      (lambda (string)
+        (let ((message "Should have been before '%s' but is not (word at point is '%s')."))
+          (cl-assert
+           (looking-at string)
+           nil message string (word-at-point)))))
 
 (Then "^I should be after \"\\([^\"]+\\)\"$"
       (lambda (string)
@@ -53,6 +67,17 @@
            (equal line (line-number-at-pos))
            nil message line (line-number-at-pos)))))
 
+(Then "^I should be at beginning of buffer$"
+      (lambda ()
+        (cl-assert
+         (bobp)
+         nil "Is not at the beginning of the buffer")))
+
+(Then "^I should be at end of buffer$"
+      (lambda ()
+        (cl-assert
+         (eobp))
+        nil "Is not at the end of the buffer"))
 
 (provide 'beginend-steps)
 
