@@ -51,6 +51,10 @@
   (define-key map (vector 'remap 'beginning-of-buffer) command-begin)
   (define-key map (vector 'remap 'end-of-buffer) command-end))
 
+(defun beginend--goto-nonwhitespace ()
+  "Move point backward after the first non-whitespace character."
+  (re-search-backward "[^[:space:]]" nil t)
+  (forward-char))
 
 
 
@@ -67,8 +71,7 @@
   (interactive)
   (call-interactively #'end-of-buffer)
   (when (re-search-backward "^-- $" nil t)
-    (re-search-backward "[^[:space:]]" nil t)
-    (forward-char)))
+    (beginend--goto-nonwhitespace)))
 
 (with-eval-after-load "message"
   (beginend--defkey message-mode-map
@@ -104,8 +107,7 @@
   "Go to the end of a dired buffer, before the empty line."
   (interactive)
   (goto-char (point-max))
-  (re-search-backward "[^[:space:]]" nil t)
-  (forward-char))
+  (beginend--goto-nonwhitespace))
 
 (with-eval-after-load "dired"
   (beginend--defkey dired-mode-map
