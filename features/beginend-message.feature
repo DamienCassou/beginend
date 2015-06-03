@@ -20,6 +20,6 @@ Feature: When in message mode, begin and end are changed
     And I should be at beginning of buffer
 
     Given I press "M->"
+    Then I should be after "Bye,"
     Given I press "M->"
-    And I press "C-e"
     Then I should be at end of buffer

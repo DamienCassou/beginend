@@ -56,6 +56,22 @@
   (re-search-backward "[^[:space:]]" nil t)
   (forward-char))
 
+(defmacro beginend--double-tap-begin (&rest body)
+  "Evaluate &BODY and goto real beginning if that did not change point."
+  (let ((tempvar (make-symbol "old-position")))
+    `(let ((,tempvar (point)))
+       ,@body
+       (when (equal ,tempvar (point))
+         (call-interactively #'beginning-of-buffer)))))
+
+(defmacro beginend--double-tap-end (&rest body)
+  "Evaluate &BODY and goto real end if that did not change point."
+  (let ((tempvar (make-symbol "old-position")))
+    `(let ((,tempvar (point)))
+       ,@body
+       (when (equal ,tempvar (point))
+         (call-interactively #'end-of-buffer)))))
+
 
 
 ;;; Message mode
@@ -64,14 +80,16 @@
 (defun beginend-message-goto-beginning ()
   "Go to the beginning of an email, after the headers."
   (interactive)
-  (message-goto-body))
+  (beginend--double-tap-begin
+   (message-goto-body)))
 
 (defun beginend-message-goto-end ()
   "Go to the end of an email, before the signature."
   (interactive)
-  (call-interactively #'end-of-buffer)
-  (when (re-search-backward "^-- $" nil t)
-    (beginend--goto-nonwhitespace)))
+  (beginend--double-tap-end
+   (call-interactively #'end-of-buffer)
+   (when (re-search-backward "^-- $" nil t)
+     (beginend--goto-nonwhitespace))))
 
 (with-eval-after-load "message"
   (beginend--defkey message-mode-map
@@ -90,24 +108,26 @@
 (defun beginend-dired-goto-beginning ()
   "Go to the beginning of a dired buffer, after `.' and `..'."
   (interactive)
-  (goto-char (point-min))
-  (let ((move 4))
-    (when (and (boundp 'dired-omit-mode) dired-omit-mode)
-      ;; dired-omit-mode hides `.' and `..'.
-      (setf move (- move 2)))
-    (when (and (boundp 'dired-hide-details-hide-information-lines)
-               dired-hide-details-hide-information-lines
-               (boundp 'dired-hide-details-mode)
-               dired-hide-details-mode)
-      ;; 1 line containing directory size
-      (setf move (- move 1)))
-    (dired-next-line move)))
+  (beginend--double-tap-begin
+   (goto-char (point-min))
+   (let ((move 4))
+     (when (and (boundp 'dired-omit-mode) dired-omit-mode)
+       ;; dired-omit-mode hides `.' and `..'.
+       (setf move (- move 2)))
+     (when (and (boundp 'dired-hide-details-hide-information-lines)
+                dired-hide-details-hide-information-lines
+                (boundp 'dired-hide-details-mode)
+                dired-hide-details-mode)
+       ;; 1 line containing directory size
+       (setf move (- move 1)))
+     (dired-next-line move))))
 
 (defun beginend-dired-goto-end ()
   "Go to the end of a dired buffer, before the empty line."
   (interactive)
-  (goto-char (point-max))
-  (beginend--goto-nonwhitespace))
+  (beginend--double-tap-end
+   (goto-char (point-max))
+   (beginend--goto-nonwhitespace)))
 
 (with-eval-after-load "dired"
   (beginend--defkey dired-mode-map
