@@ -6,47 +6,56 @@ Feature: When in dired mode, begin and end are changed
   Background:
     Given I setup dired
 
-  Scenario: Press M-< or M-> once
-    Given I deactivate dired-omit-mode
-    And I deactivate dired-hide-details-mode
+  Scenario outline: Press M-< once
+    Given I <activate omit> dired-omit-mode
+    And I <activate hide> dired-hide-details-mode
 
     # avoid being at the right position already
     And I press "M->"
 
-    And I press "M-<"
+    When I press "M-<"
     Then I should be before "file1"
-    Given I press "M->"
+
+    Examples:
+    | activate omit | activate hide |
+    | activate      | activate      |
+    | activate      | deactivate    |
+    | deactivate    | activate      |
+    | deactivate    | deactivate    |
+
+  Scenario outline: Press M-> once
+    Given I <activate omit> dired-omit-mode
+    And I <activate hide> dired-hide-details-mode
+
+    # avoid being at the right position already
+    And I press "M-<"
+
+    When I press "M->"
     Then I should be after "file2"
 
-    Given I deactivate dired-omit-mode
-    And I activate dired-hide-details-mode
-    And I press "M-<"
-    Then I should be before "file1"
-    Given I press "M->"
-    Then I should be after "file2"
+    Examples:
+    | activate omit | activate hide |
+    | activate      | activate      |
+    | activate      | deactivate    |
+    | deactivate    | activate      |
+    | deactivate    | deactivate    |
 
-    Given I deactivate dired-omit-mode
-    And I activate dired-hide-details-mode
-    And I press "M-<"
-    Then I should be before "file1"
+  Scenario: Press M-< twice
+    # avoid being at the right position already
     Given I press "M->"
-    Then I should be after "file2"
 
-    Given I activate dired-omit-mode
-    And I activate dired-hide-details-mode
-    And I press "M-<"
-    Then I should be before "file1"
-    Given I press "M->"
-    Then I should be after "file2"
-
-  Scenario: Press M-< or M-> twice
-    Given I deactivate dired-omit-mode
-    And I deactivate dired-hide-details-mode
-    And I press "M-<"
-    Then I should be before "file1"
     Given I press "M-<"
-    And I should be at beginning of buffer
+    And I should be before "file1"
+
+    When I press "M-<"
+    Then I should be at beginning of buffer
+
+  Scenario: Press M-> twice
+    # avoid being at the right position already
+    Given I press "M-<"
+
     Given I press "M->"
-    Then I should be after "file2"
-    Given I press "M->"
-    And I should be at end of buffer
+    And I should be after "file2"
+
+    When I press "M->"
+    Then I should be at end of buffer
