@@ -83,13 +83,6 @@
          (eobp)
          nil "Is not at the end of the buffer")))
 
-(Then "^I should be at line \\([0-9]+\\)$"
-      (lambda (line)
-        (let ((message "Should be at line '%s' but is at line '%s'"))
-          (cl-assert
-           (equal (string-to-number line) (line-number-at-pos))
-           nil message line (line-number-at-pos)))))
-
 (provide 'beginend-steps)
 
 ;;; beginend-steps.el ends here

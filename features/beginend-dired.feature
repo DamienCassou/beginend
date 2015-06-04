@@ -11,7 +11,7 @@ Feature: When in dired mode, begin and end are changed
     Given I press "M->"
 
     When I press "M-<"
-    Then I should be at line 1
+    Then I should be at beginning of buffer
 
   Scenario outline: Press M-< once
     Given I <activate omit> dired-omit-mode
