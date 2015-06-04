@@ -124,7 +124,7 @@ For messages, this activates `beginend-message-mode'."
 
 ;;;###autoload
 (defun beginend-dired-goto-beginning ()
-  "Go to the beginning of a dired buffer, after `.' and `..'."
+  "Go to the beginning of a dired's buffer first file, after `.' and `..'."
   (interactive)
   (beginend--double-tap-begin
    (goto-char (point-min))
@@ -142,7 +142,7 @@ For messages, this activates `beginend-message-mode'."
 
 ;;;###autoload
 (defun beginend-dired-goto-end ()
-  "Go to the end of a dired buffer, before the empty line."
+  "Go at the end of a dired's buffer last file, before the empty line."
   (interactive)
   (beginend--double-tap-end
    (goto-char (point-max))
@@ -157,7 +157,7 @@ For messages, this activates `beginend-message-mode'."
     map))
 
 (define-minor-mode beginend-dired-mode
-  "M-< (resp. M->) go to first (resp. last) file line."
+  nil  ; documentation
   nil  ; init-value
   "be" ; lighter
   (beginend--dired-mode-map))
