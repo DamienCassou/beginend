@@ -74,6 +74,16 @@
        (when (equal ,tempvar (point))
          (call-interactively #'end-of-buffer)))))
 
+;;;###autoload
+(defun beginend-setup-all ()
+  "Use beginend on all compatible modes.
+For `dired', this activates `beginend-dired-mode'.
+For messages, this activates `beginend-message-mode'."
+  (add-hook 'dired-mode-hook #'beginend-dired-mode)
+  (add-hook 'message-mode-hook #'beginend-message-mode)
+  (add-hook 'mu4e-view-mode-hook #'beginend-message-mode)
+  (add-hook 'mu4e-compose-mode-hook #'beginend-message-mode))
+
 
 
 ;;; Message mode
@@ -94,20 +104,19 @@
    (when (re-search-backward "^-- $" nil t)
      (beginend--goto-nonwhitespace))))
 
-(with-eval-after-load "message"
-  (beginend--defkey message-mode-map
-                    #'beginend-message-goto-beginning
-                    #'beginend-message-goto-end))
+(defun beginend--message-mode-map ()
+  "Return a keymap for beginend mode in a message."
+  (let ((map (make-sparse-keymap)))
+    (beginend--defkey map
+                      #'beginend-message-goto-beginning
+                      #'beginend-message-goto-end)
+    map))
 
-(with-eval-after-load "mu4e-view"
-  (beginend--defkey mu4e-view-mode-map
-                    #'beginend-message-goto-beginning
-                    #'beginend-message-goto-end))
-
-(with-eval-after-load "mu4e-compose"
-  (beginend--defkey mu4e-compose-mode-map
-                    #'beginend-message-goto-beginning
-                    #'beginend-message-goto-end))
+(define-minor-mode beginend-message-mode
+  nil  ; default documentation
+  nil  ; init-value
+  "be" ; lighter
+  (beginend--message-mode-map))
 
 
 
@@ -139,10 +148,19 @@
    (goto-char (point-max))
    (beginend--goto-nonwhitespace)))
 
-(with-eval-after-load "dired"
-  (beginend--defkey dired-mode-map
-                    #'beginend-dired-goto-beginning
-                    #'beginend-dired-goto-end))
+(defun beginend--dired-mode-map ()
+  "Return a keymap for beginend mode in dired."
+  (let ((map (make-sparse-keymap)))
+    (beginend--defkey map
+                      #'beginend-dired-goto-beginning
+                      #'beginend-dired-goto-end)
+    map))
+
+(define-minor-mode beginend-dired-mode
+  "M-< (resp. M->) go to first (resp. last) file line."
+  nil  ; init-value
+  "be" ; lighter
+  (beginend--dired-mode-map))
 
 (provide 'beginend)
 

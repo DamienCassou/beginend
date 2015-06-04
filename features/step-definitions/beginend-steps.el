@@ -46,6 +46,14 @@
      (lambda ()
        (dired-hide-details-mode)))
 
+(Given "^I activate beginend-message-mode$"
+       (lambda ()
+         (beginend-message-mode 1)))
+
+(Given "^I activate beginend-dired-mode$"
+       (lambda ()
+         (beginend-dired-mode 1)))
+
 (Then "^I should be before \"\\([^\"]+\\)\"$"
       (lambda (string)
         (let ((message "Should have been before '%s' but is not (word at point is '%s')."))
@@ -71,6 +79,13 @@
         (cl-assert
          (eobp)
          nil "Is not at the end of the buffer")))
+
+(Then "^I should be at line \\([0-9]+\\)$"
+      (lambda (line)
+        (let ((message "Should be at line '%s' but is at line '%s'"))
+          (cl-assert
+           (equal (string-to-number line) (line-number-at-pos))
+           nil message line (line-number-at-pos)))))
 
 (provide 'beginend-steps)
 

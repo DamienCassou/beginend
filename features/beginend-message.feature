@@ -7,12 +7,14 @@ Feature: When in message mode, begin and end are changed
     Given I setup a message
 
   Scenario: Press M-< or M-> once
+    Given I activate beginend-message-mode
     Given I press "M-<"
     Then I should be before "Hello,"
     Given I press "M->"
     Then I should be after "Bye,"
 
   Scenario: Press M-< or M-> twice
+    Given I activate beginend-message-mode
     Given I press "M-<"
     Then I should be before "Hello,"
     Given I press "M-<"

@@ -8,7 +8,13 @@ Redefine M-< and M-> for some modes
 
 ## Installing
 
-Use melpa.
+Use [melpa](http://melpa.milkbox.net).
+
+In your Emacs init file, add:
+
+```emacs
+(beginend-setup-all)
+```
 
 ## Contributing
 
