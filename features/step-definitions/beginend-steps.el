@@ -10,6 +10,9 @@
 (require 'f)
 (require 'thingatpt)
 
+(declare-function dired-omit-mode "dired-x")
+(declare-function dired-hide-details-mode "dired")
+
 ;; defined in env.el (which is loaded automatically by ecukes)
 (eval-when-compile (defvar beginend--test-tempdir))
 
