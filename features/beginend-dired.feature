@@ -19,7 +19,7 @@ Feature: When in dired mode, begin and end are changed
     And I activate beginend-dired-mode
 
     # avoid being at the right position already
-    And I press "M->"
+    Given I press "M->"
 
     When I press "M-<"
     Then I should be before "file1"
@@ -37,7 +37,7 @@ Feature: When in dired mode, begin and end are changed
     And I activate beginend-dired-mode
 
     # avoid being at the right position already
-    And I press "M-<"
+    Given I press "M-<"
 
     When I press "M->"
     Then I should be after "file2"
