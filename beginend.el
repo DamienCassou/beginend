@@ -85,6 +85,7 @@
   (beginend--double-tap-begin
    (message-goto-body)))
 
+;;;###autoload
 (defun beginend-message-goto-end ()
   "Go to the end of an email, before the signature."
   (interactive)
@@ -112,6 +113,7 @@
 
 ;;; Dired mode
 
+;;;###autoload
 (defun beginend-dired-goto-beginning ()
   "Go to the beginning of a dired buffer, after `.' and `..'."
   (interactive)
@@ -129,6 +131,7 @@
        (setf move (- move 1)))
      (dired-next-line move))))
 
+;;;###autoload
 (defun beginend-dired-goto-end ()
   "Go to the end of a dired buffer, before the empty line."
   (interactive)
