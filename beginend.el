@@ -162,6 +162,11 @@ For messages, this activates `beginend-message-mode'."
   "be" ; lighter
   (beginend--dired-mode-map))
 
+
+
+;;;
+
+
 (provide 'beginend)
 
 ;;; beginend.el ends here
