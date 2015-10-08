@@ -2,7 +2,6 @@ language: emacs
 sudo: required
 cache: apt
 env:
-  - EVM_EMACS=emacs-24.4-bin
   - EVM_EMACS=emacs-24.5-bin
 before_install:
   - curl -fsSkL https://gist.githubusercontent.com/tonini/09a8bec7a0b2c219e0d7/raw > travis.sh && source ./travis.sh
