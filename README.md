@@ -13,7 +13,7 @@ Redefine M-< and M-> for some modes.
 
 ## Installing
 
-Use [melpa](http://melpa.milkbox.net).
+Use [melpa](https://melpa.org/).
 
 In your Emacs init file, add:
 
