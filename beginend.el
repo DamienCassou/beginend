@@ -1,9 +1,9 @@
 ;;; beginend.el --- Redefine M-< and M-> for some modes   -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2015 Damien Cassou
+;; Copyright (C) 2015-2017 Damien Cassou
 
 ;; Author: Damien Cassou <damien@cassou.me>
-;; Version: 0.1
+;; Version: 1.1.0
 ;; GIT: https://github.com/DamienCassou/beginend
 ;; Package-Requires: ((emacs "24.4"))
 ;; Created: 01 Jun 2015
