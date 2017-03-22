@@ -23,10 +23,6 @@ deps :
 	$(CASK) install
 
 check : deps
-	$(CASK) exec $(EMACSBATCH)  \
-	$(patsubst %,-l % , $(SRCS))\
-	$(patsubst %,-l % , $(TESTS))\
-	-f ert-run-tests-batch-and-exit
 	cask exec ecukes
 
 install : $(TAR)
