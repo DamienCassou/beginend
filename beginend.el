@@ -46,6 +46,7 @@
   (defvar message-mode-map)
   (defvar mu4e-view-mode-map)
   (defvar mu4e-compose-mode-map)
+  (defvar notmuch-search-mode-map)
   (defvar dired-mode-map))
 
 (defun beginend--defkey (map command-begin command-end)
@@ -82,7 +83,8 @@ For messages, this activates `beginend-message-mode'."
   (add-hook 'dired-mode-hook #'beginend-dired-mode)
   (add-hook 'message-mode-hook #'beginend-message-mode)
   (add-hook 'mu4e-view-mode-hook #'beginend-message-mode)
-  (add-hook 'mu4e-compose-mode-hook #'beginend-message-mode))
+  (add-hook 'mu4e-compose-mode-hook #'beginend-message-mode)
+  (add-hook 'notmuch-search-mode-hook #'beginend-notmuch-search-mode))
 
 
 
@@ -164,7 +166,35 @@ For messages, this activates `beginend-message-mode'."
 
 
 
-;;;
+;;; notmuch
+
+(defun beginend-notmuch-search-goto-beginning ()
+  "Go at the first thread of a notmuch search buffer."
+  (interactive)
+  (beginend--double-tap-end
+   (notmuch-search-first-thread)
+   (beginning-of-line)))
+
+(defun beginend-notmuch-search-goto-end ()
+  "Go at the last thread of a notmuch search buffer."
+  (interactive)
+  (beginend--double-tap-end
+   (notmuch-search-last-thread)
+   (end-of-line)))
+
+(defun beginend--notmuch-search-mode-map ()
+  "Return a keymap for beginend mode in notmuch-search."
+  (let ((map (make-sparse-keymap)))
+    (beginend--defkey map
+              #'beginend-notmuch-search-goto-beginning
+              #'beginend-notmuch-search-goto-end)
+    map))
+
+(define-minor-mode beginend-notmuch-search-mode
+  nil  ; default documentation
+  nil  ; init-value
+  "be" ; lighter
+  (beginend--notmuch-search-mode-map))
 
 
 (provide 'beginend)
