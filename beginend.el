@@ -154,8 +154,8 @@ For messages, this activates `beginend-message-mode'."
   "Return a keymap for beginend mode in dired."
   (let ((map (make-sparse-keymap)))
     (beginend--defkey map
-                      #'beginend-dired-goto-beginning
-                      #'beginend-dired-goto-end)
+              #'beginend-dired-goto-beginning
+              #'beginend-dired-goto-end)
     map))
 
 (define-minor-mode beginend-dired-mode
