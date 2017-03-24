@@ -193,7 +193,7 @@ For messages, this activates `beginend-message-mode'."
 (define-minor-mode beginend-notmuch-search-mode
   nil  ; default documentation
   nil  ; init-value
-  "be" ; lighter
+  " be" ; lighter
   (beginend--notmuch-search-mode-map))
 
 
