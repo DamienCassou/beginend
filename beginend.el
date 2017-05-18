@@ -7,7 +7,6 @@
 ;; GIT: https://github.com/DamienCassou/beginend
 ;; Package-Requires: ((emacs "24.4"))
 ;; Created: 01 Jun 2015
-;; Keywords: dired message mu4e begin end beginning buffer
 
 ;; This file is not part of GNU Emacs.
 
