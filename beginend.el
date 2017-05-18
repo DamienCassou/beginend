@@ -45,7 +45,6 @@
   (defvar message-mode-map)
   (defvar mu4e-view-mode-map)
   (defvar mu4e-compose-mode-map)
-  (defvar notmuch-search-mode-map)
   (defvar dired-mode-map))
 
 (defun beginend--defkey (map command-begin command-end)
@@ -82,8 +81,7 @@ For messages, this activates `beginend-message-mode'."
   (add-hook 'dired-mode-hook #'beginend-dired-mode)
   (add-hook 'message-mode-hook #'beginend-message-mode)
   (add-hook 'mu4e-view-mode-hook #'beginend-message-mode)
-  (add-hook 'mu4e-compose-mode-hook #'beginend-message-mode)
-  (add-hook 'notmuch-search-mode-hook #'beginend-notmuch-search-mode))
+  (add-hook 'mu4e-compose-mode-hook #'beginend-message-mode))
 
 
 
