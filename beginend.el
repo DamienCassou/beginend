@@ -74,95 +74,91 @@
        (when (equal ,tempvar (point))
          (call-interactively #'end-of-buffer)))))
 
+(defvar beginend--modes nil
+  "List all beginend modes.
+Each element has the form (std-mode-hook . beginend-mode) is the standard
+mode hook (e.g., `dired-mode-hook') and beginend-mode is the beginend
+mode (e.g., function `beginend-dired-mode') to activate with the hook.")
+
+(defmacro beginend-define-mode (mode begin-body end-body)
+  "Define a new beginend mode.
+MODE is a name of an existing mode that should be adapted.
+
+BEGIN-BODY and END-BODY are two `progn' expressions passed to respectively
+`beginend--double-tap-begin' and `beginend--double-tap-end'."
+  (declare (indent 1))
+  (let* ((mode-name (symbol-name mode))
+         (hook (intern (format "%s-hook" mode-name)))
+         (beginfunc-name (intern (format "beginend-%s-goto-beginning" mode-name)))
+         (endfunc-name (intern (format "beginend-%s-goto-end" mode-name)))
+         (map-name (intern (format "beginend-%s-map" mode-name)))
+         (beginend-mode-name (intern (format "beginend-%s" mode-name))))
+    `(progn
+       (defun ,beginfunc-name ()
+         ,(format "Go to beginning of buffer in `%s'." mode-name)
+         (interactive)
+         (beginend--double-tap-begin
+          ,@(cdr begin-body)))
+       (defun ,endfunc-name ()
+         ,(format "Go to beginning of buffer in `%s'." mode-name)
+         (interactive)
+         (beginend--double-tap-end
+          ,@(cdr end-body)))
+       (defvar ,map-name
+         (let ((map (make-sparse-keymap)))
+           (beginend--defkey map #',beginfunc-name #',endfunc-name)
+           map)
+         ,(format "Keymap for beginend in `%s'." mode-name))
+       (define-minor-mode ,beginend-mode-name
+         ,(format "Mode for beginend in `%s'.\n\\{%s}" mode-name map-name)
+         :lighter " be"
+         :keymap ,map-name)
+       (add-to-list 'beginend--modes
+                    (cons ',hook
+                          #',beginend-mode-name)))))
+
+;;; Modes
+
+(beginend-define-mode message-mode
+  (progn
+    (message-goto-body))
+  (progn
+    (call-interactively #'end-of-buffer)
+    (when (re-search-backward "^-- $" nil t)
+      (beginend--goto-nonwhitespace))))
+
+(beginend-define-mode dired-mode
+  (progn
+    (goto-char (point-min))
+    (let ((move 4))
+      (when (and (boundp 'dired-omit-mode) dired-omit-mode)
+        ;; dired-omit-mode hides `.' and `..'.
+        (setf move (- move 2)))
+      (when (and (boundp 'dired-hide-details-hide-information-lines)
+                 dired-hide-details-hide-information-lines
+                 (boundp 'dired-hide-details-mode)
+                 dired-hide-details-mode)
+        ;; 1 line containing directory size
+        (setf move (- move 1)))
+      (dired-next-line move)))
+  (progn
+    (goto-char (point-max))
+    (beginend--goto-nonwhitespace)))
+
 ;;;###autoload
 (defun beginend-setup-all ()
   "Use beginend on all compatible modes.
-For `dired', this activates `beginend-dired-mode'.
-For messages, this activates `beginend-message-mode'."
-  (add-hook 'dired-mode-hook #'beginend-dired-mode)
-  (add-hook 'message-mode-hook #'beginend-message-mode)
+For `dired', this activates function `beginend-dired-mode'.
+For messages, this activates function `beginend-message-mode'."
+  (mapc (lambda (pair)
+          (add-hook (car pair) (cdr pair)))
+        beginend--modes)
   (add-hook 'mu4e-view-mode-hook #'beginend-message-mode)
   (add-hook 'mu4e-compose-mode-hook #'beginend-message-mode))
-
-
-
-;;; Message mode
-
-;;;###autoload
-(defun beginend-message-goto-beginning ()
-  "Go to the beginning of an email, after the headers."
-  (interactive)
-  (beginend--double-tap-begin
-   (message-goto-body)))
-
-;;;###autoload
-(defun beginend-message-goto-end ()
-  "Go to the end of an email, before the signature."
-  (interactive)
-  (beginend--double-tap-end
-   (call-interactively #'end-of-buffer)
-   (when (re-search-backward "^-- $" nil t)
-     (beginend--goto-nonwhitespace))))
-
-(defun beginend--message-mode-map ()
-  "Return a keymap for beginend mode in a message."
-  (let ((map (make-sparse-keymap)))
-    (beginend--defkey map
-                      #'beginend-message-goto-beginning
-                      #'beginend-message-goto-end)
-    map))
-
-(define-minor-mode beginend-message-mode
-  nil  ; default documentation
-  nil  ; init-value
-  "be" ; lighter
-  (beginend--message-mode-map))
-
-
-
-;;; Dired mode
-
-;;;###autoload
-(defun beginend-dired-goto-beginning ()
-  "Go to the beginning of a dired's buffer first file, after `.' and `..'."
-  (interactive)
-  (beginend--double-tap-begin
-   (goto-char (point-min))
-   (let ((move 4))
-     (when (and (boundp 'dired-omit-mode) dired-omit-mode)
-       ;; dired-omit-mode hides `.' and `..'.
-       (setf move (- move 2)))
-     (when (and (boundp 'dired-hide-details-hide-information-lines)
-                dired-hide-details-hide-information-lines
-                (boundp 'dired-hide-details-mode)
-                dired-hide-details-mode)
-       ;; 1 line containing directory size
-       (setf move (- move 1)))
-     (dired-next-line move))))
-
-;;;###autoload
-(defun beginend-dired-goto-end ()
-  "Go at the end of a dired's buffer last file, before the empty line."
-  (interactive)
-  (beginend--double-tap-end
-   (goto-char (point-max))
-   (beginend--goto-nonwhitespace)))
-
-(defun beginend--dired-mode-map ()
-  "Return a keymap for beginend mode in dired."
-  (let ((map (make-sparse-keymap)))
-    (beginend--defkey map
-              #'beginend-dired-goto-beginning
-              #'beginend-dired-goto-end)
-    map))
-
-(define-minor-mode beginend-dired-mode
-  nil  ; documentation
-  nil  ; init-value
-  "be" ; lighter
-  (beginend--dired-mode-map))
 
 
 (provide 'beginend)
 
 ;;; beginend.el ends here
+
+;;  LocalWords:  beginend
