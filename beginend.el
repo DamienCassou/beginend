@@ -67,11 +67,15 @@
        (when (equal ,tempvar (point))
          (goto-char (point-max))))))
 
-(defvar beginend--modes nil
+(defvar beginend-modes
+  '(
+    (mu4e-view-mode-hook . beginend-message-mode)
+    (mu4e-compose-mode-hook . beginend-message-mode)
+    )
   "List all beginend modes.
-Each element has the form (std-mode-hook . beginend-mode) is the standard
-mode hook (e.g., `dired-mode-hook') and beginend-mode is the beginend
-mode (e.g., function `beginend-dired-mode') to activate with the hook.")
+Each element has the form (STD-MODE-HOOK . BEGINEND-MODE).  STD-MODE-HOOK
+is the standard mode hook (e.g., `dired-mode-hook') to which
+BEGINEND-MODE (e.g., function `beginend-dired-mode') should be added.")
 
 (defmacro beginend-define-mode (mode begin-body end-body)
   "Define a new beginend mode.
@@ -106,7 +110,7 @@ BEGIN-BODY and END-BODY are two `progn' expressions passed to respectively
          ,(format "Mode for beginend in `%s'.\n\\{%s}" mode-name map-name)
          :lighter " be"
          :keymap ,map-name)
-       (add-to-list 'beginend--modes
+       (add-to-list 'beginend-modes
                     (cons ',hook
                           #',beginend-mode-name)))))
 
@@ -228,13 +232,35 @@ BEGIN-BODY and END-BODY are two `progn' expressions passed to respectively
 ;;;###autoload
 (defun beginend-setup-all ()
   "Use beginend on all compatible modes.
-For `dired', this activates function `beginend-dired-mode'.
-For messages, this activates function `beginend-message-mode'."
+For example, this activates function `beginend-dired-mode' in `dired' and
+function `beginend-message-mode' in `message-mode'.  All affected minor
+modes are described in `beginend-modes'."
   (mapc (lambda (pair)
           (add-hook (car pair) (cdr pair)))
-        beginend--modes)
-  (add-hook 'mu4e-view-mode-hook #'beginend-message-mode)
-  (add-hook 'mu4e-compose-mode-hook #'beginend-message-mode))
+        beginend-modes))
+
+;;;###autoload
+(defun beginend-unsetup-all ()
+  "Remove beginend from all compatible modes in `beginend-modes'."
+  (mapc (lambda (pair)
+          (remove-hook (car pair) (cdr pair)))
+        beginend-modes))
+
+(define-minor-mode beginend-global-mode
+  "Toggle beginend mode.
+Interactively with no argument, this command toggles the mode.  A positive
+prefix argument enables the mode, any other prefix argument disables it.
+From Lisp, argument omitted or nil enables the mode, `toggle' toggles the
+state.
+
+When beginend mode is enabled, modes such as `dired-mode', `message-mode'
+and `compilation-mode' will have their \\[beginning-of-buffer] and
+\\[end-of-buffer] keys adapted to go to meaningful places."
+  :lighter " be"
+  :global t
+  (if beginend-global-mode
+      (beginend-setup-all)
+    (beginend-unsetup-all)))
 
 
 (provide 'beginend)
