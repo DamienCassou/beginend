@@ -62,17 +62,19 @@
   "Evaluate &BODY and goto real beginning if that did not change point."
   (let ((tempvar (make-symbol "old-position")))
     `(let ((,tempvar (point)))
+       (goto-char (point-min))
        ,@body
        (when (equal ,tempvar (point))
-         (call-interactively #'beginning-of-buffer)))))
+         (goto-char (point-min))))))
 
 (defmacro beginend--double-tap-end (&rest body)
   "Evaluate &BODY and goto real end if that did not change point."
   (let ((tempvar (make-symbol "old-position")))
     `(let ((,tempvar (point)))
+       (goto-char (point-max))
        ,@body
        (when (equal ,tempvar (point))
-         (call-interactively #'end-of-buffer)))))
+         (goto-char (point-max))))))
 
 (defvar beginend--modes nil
   "List all beginend modes.
@@ -123,13 +125,11 @@ BEGIN-BODY and END-BODY are two `progn' expressions passed to respectively
   (progn
     (message-goto-body))
   (progn
-    (call-interactively #'end-of-buffer)
     (when (re-search-backward "^-- $" nil t)
       (beginend--goto-nonwhitespace))))
 
 (beginend-define-mode dired-mode
   (progn
-    (goto-char (point-min))
     (let ((move 4))
       (when (and (boundp 'dired-omit-mode) dired-omit-mode)
         ;; dired-omit-mode hides `.' and `..'.
@@ -142,7 +142,6 @@ BEGIN-BODY and END-BODY are two `progn' expressions passed to respectively
         (setf move (- move 1)))
       (dired-next-line move)))
   (progn
-    (goto-char (point-max))
     (beginend--goto-nonwhitespace)))
 
 ;;;###autoload
