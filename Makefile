@@ -16,14 +16,11 @@ TESTS        = $(wildcard test/*.el)
 TAR          = $(DIST)/beginend-$(VERSION).tar
 
 
-.PHONY: all deps check install uninstall reinstall clean-all clean
+.PHONY: all deps check test lint install uninstall reinstall clean-all clean clean-elc
 all : deps $(TAR)
 
 deps :
 	$(CASK) install
-
-check : deps
-	cask exec ecukes
 
 install : $(TAR)
 	$(EMACSBATCH) -l package -f package-initialize \
@@ -37,8 +34,10 @@ reinstall : clean uninstall install
 clean-all : clean
 	rm -rf $(PKG_DIR)
 
-clean :
+clean-elc :
 	rm -f *.elc
+
+clean : clean-elc
 	rm -rf $(DIST)
 	rm -f *-pkg.el
 
@@ -47,3 +46,21 @@ $(TAR) : $(DIST) $(SRCS)
 
 $(DIST) :
 	mkdir $(DIST)
+
+check : test lint
+
+test: unit
+
+unit: $(PKG_DIR) clean-elc
+	${CASK} exec ecukes
+
+lint : $(SRCS) clean-elc
+	# Byte compile all and stop on any warning or error
+	${CASK} emacs $(EMACSFLAGS) \
+	--eval "(setq byte-compile-error-on-warn t)" \
+	-L . -f batch-byte-compile ${SRCS} ${EXAMPLES} ${TESTS}
+
+	# Run package-lint to check for packaging mistakes
+	${CASK} emacs $(EMACSFLAGS) \
+	-l package-lint.el \
+	-f package-lint-batch-and-exit ${SRCS}
