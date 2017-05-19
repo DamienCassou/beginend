@@ -39,15 +39,6 @@
 
 ;;; Helper code
 
-;; Avoid warnings about undefined variables and functions
-(declare-function message-goto-body "message")
-(declare-function dired-next-line "dired")
-(eval-when-compile
-  (defvar message-mode-map)
-  (defvar mu4e-view-mode-map)
-  (defvar mu4e-compose-mode-map)
-  (defvar dired-mode-map))
-
 (defun beginend--defkey (map command-begin command-end)
   "Bind \[beginning-of-buffer] and \[end-of-buffer] in MAP to COMMAND-BEGIN and COMMAND-END."
   (define-key map (vector 'remap 'beginning-of-buffer) command-begin)
@@ -119,7 +110,10 @@ BEGIN-BODY and END-BODY are two `progn' expressions passed to respectively
                     (cons ',hook
                           #',beginend-mode-name)))))
 
+
 ;;; Modes
+
+(declare-function message-goto-body "message")
 
 (beginend-define-mode message-mode
   (progn
@@ -127,6 +121,8 @@ BEGIN-BODY and END-BODY are two `progn' expressions passed to respectively
   (progn
     (when (re-search-backward "^-- $" nil t)
       (beginend--goto-nonwhitespace))))
+
+(declare-function dired-next-line "dired")
 
 (beginend-define-mode dired-mode
   (progn
@@ -150,17 +146,27 @@ BEGIN-BODY and END-BODY are two `progn' expressions passed to respectively
   (progn
     (occur-prev 1)))
 
+(declare-function ibuffer-forward-line "ibuffer")
+(declare-function ibuffer-backward-line "ibuffer")
+
 (beginend-define-mode ibuffer-mode
   (progn
     (ibuffer-forward-line 1))
   (progn
     (ibuffer-backward-line 1)))
 
+(declare-function vc-dir-next-line "vc-dir")
+(declare-function vc-dir-previous-line "vc-dir")
+
 (beginend-define-mode vc-dir-mode
   (progn
     (vc-dir-next-line 1))
   (progn
     (vc-dir-previous-line 1)))
+
+
+(declare-function bs-up "bs")
+(declare-function bs-down "bs")
 
 (beginend-define-mode bs-mode
   (progn
@@ -176,17 +182,26 @@ BEGIN-BODY and END-BODY are two `progn' expressions passed to respectively
   (progn
     (re-search-backward "^  \\[" nil t)))
 
+(declare-function org-agenda-next-item "org-agenda")
+(declare-function org-agenda-previous-item "org-agenda")
+
 (beginend-define-mode org-agenda-mode
   (progn
     (org-agenda-next-item 1))
   (progn
     (org-agenda-previous-item 1)))
 
+(declare-function compilation-next-error "compile")
+(declare-function compilation-previous-error "compile")
+
 (beginend-define-mode compilation-mode
   (progn
     (compilation-next-error 1))
   (progn
     (compilation-previous-error 1)))
+
+(declare-function notmuch-search-first-thread "notmuch")
+(declare-function notmuch-search-last-thread "notmuch")
 
 (beginend-define-mode notmuch-search-mode
   (progn
@@ -200,6 +215,9 @@ BEGIN-BODY and END-BODY are two `progn' expressions passed to respectively
   (progn)
   (progn
     (forward-line -2)))
+
+(declare-function prodigy-first "prodigy")
+(declare-function prodigy-last "prodigy")
 
 (beginend-define-mode prodigy-mode
   (progn
