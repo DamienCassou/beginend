@@ -144,6 +144,69 @@ BEGIN-BODY and END-BODY are two `progn' expressions passed to respectively
   (progn
     (beginend--goto-nonwhitespace)))
 
+(beginend-define-mode occur-mode
+  (progn
+    (occur-next 1))
+  (progn
+    (occur-prev 1)))
+
+(beginend-define-mode ibuffer-mode
+  (progn
+    (ibuffer-forward-line 1))
+  (progn
+    (ibuffer-backward-line 1)))
+
+(beginend-define-mode vc-dir-mode
+  (progn
+    (vc-dir-next-line 1))
+  (progn
+    (vc-dir-previous-line 1)))
+
+(beginend-define-mode bs-mode
+  (progn
+    (bs-down 2))
+  (progn
+    (bs-up 1)
+    (bs-down 1)))
+
+(beginend-define-mode recentf-dialog-mode
+  (progn
+    (when (re-search-forward "^  \\[" nil t)
+      (goto-char (match-beginning 0))))
+  (progn
+    (re-search-backward "^  \\[" nil t)))
+
+(beginend-define-mode org-agenda-mode
+  (progn
+    (org-agenda-next-item 1))
+  (progn
+    (org-agenda-previous-item 1)))
+
+(beginend-define-mode compilation-mode
+  (progn
+    (compilation-next-error 1))
+  (progn
+    (compilation-previous-error 1)))
+
+(beginend-define-mode notmuch-search-mode
+  (progn
+    (notmuch-search-first-thread)
+    (beginning-of-line))
+  (progn
+    (notmuch-search-last-thread)
+    (end-of-line)))
+
+(beginend-define-mode elfeed-search-mode
+  (progn)
+  (progn
+    (forward-line -2)))
+
+(beginend-define-mode prodigy-mode
+  (progn
+    (prodigy-first))
+  (progn
+    (prodigy-last)))
+
 ;;;###autoload
 (defun beginend-setup-all ()
   "Use beginend on all compatible modes.
