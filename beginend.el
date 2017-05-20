@@ -50,7 +50,8 @@
   (forward-char))
 
 (defmacro beginend--double-tap-begin (&rest body)
-  "Evaluate &BODY and goto real beginning if that did not change point."
+  "Evaluate &BODY and go-to real beginning if that did not change point."
+  (declare (debug (body)))
   (let ((tempvar (make-symbol "old-position")))
     `(let ((,tempvar (point)))
        (goto-char (point-min))
@@ -60,6 +61,7 @@
 
 (defmacro beginend--double-tap-end (&rest body)
   "Evaluate &BODY and goto real end if that did not change point."
+  (declare (debug (body)))
   (let ((tempvar (make-symbol "old-position")))
     `(let ((,tempvar (point)))
        (goto-char (point-max))
@@ -83,7 +85,8 @@ MODE is a name of an existing mode that should be adapted.
 
 BEGIN-BODY and END-BODY are two `progn' expressions passed to respectively
 `beginend--double-tap-begin' and `beginend--double-tap-end'."
-  (declare (indent 1))
+  (declare (indent 1)
+           (debug (symbolp ("progn" body) ("progn" body))))
   (let* ((mode-name (symbol-name mode))
          (hook (intern (format "%s-hook" mode-name)))
          (beginfunc-name (intern (format "beginend-%s-goto-beginning" mode-name)))
