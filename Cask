@@ -5,6 +5,8 @@
 
 (development
  (depends-on "ert")
- (depends-on "ecukes")
- (depends-on "espuds")
- (depends-on "package-lint"))
+ (depends-on "ert-runner")
+ (depends-on "undercover")
+ (depends-on "package-lint")
+ (depends-on "assess" "0.4")
+ (depends-on "buttercup"))
