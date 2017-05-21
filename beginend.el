@@ -59,8 +59,10 @@
            (,extremum-var ,extremum))
        (goto-char ,extremum-var)
        ,@body
-       (when (= ,oldpos-var (point))
-         (goto-char ,extremum-var)))))
+       (if (= ,oldpos-var (point))
+           (goto-char ,extremum-var)
+         (when (/= ,oldpos-var ,extremum-var)
+           (push-mark ,oldpos-var))))))
 
 (defmacro beginend--double-tap-begin (&rest body)
   "Evaluate BODY and go-to `point-min' if point did not move."
