@@ -24,6 +24,7 @@ In particular, these modes are supported:
 | *dired-mode*          | first file              | last file                  |
 | *magit-status-mode*   | first section           | last section               |
 | *message-mode*        | first body line         | last line before signature |
+| *prog-mode*           | after initial comments  | before final comments      |
 | *occur-mode*          | first match             | last match                 |
 | *ibuffer-mode*        | first buffer            | last buffer                |
 | *bs-mode*             | first buffer            | last buffer                |
@@ -69,6 +70,8 @@ The following shows some screencasts.
 [[file:media/beginend-magit-mode.gif]]
 *** Message mode
 [[file:media/beginend-message-mode.gif]]
+*** Programming mode
+[[file:media/beginend-prog-mode.gif]]
 *** Occur mode
 [[file:media/beginend-occur-mode.gif]]
 
