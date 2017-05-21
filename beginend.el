@@ -49,25 +49,30 @@
   (re-search-backward "[^[:space:]]" nil t)
   (forward-char))
 
-(defmacro beginend--double-tap-begin (&rest body)
-  "Evaluate &BODY and go-to real beginning if that did not change point."
-  (declare (debug (body)))
-  (let ((tempvar (make-symbol "old-position")))
-    `(let ((,tempvar (point)))
-       (goto-char (point-min))
+(defmacro beginend--double-tap (extremum &rest body)
+  "Go to point EXTREMUM if executing BODY did not change point."
+  (declare (debug (form body))
+           (indent 1))
+  (let ((oldpos-var (make-symbol "old-position"))
+        (extremum-var (make-symbol "extremum")))
+    `(let ((,oldpos-var (point))
+           (,extremum-var ,extremum))
+       (goto-char ,extremum-var)
        ,@body
-       (when (equal ,tempvar (point))
-         (goto-char (point-min))))))
+       (when (= ,oldpos-var (point))
+         (goto-char ,extremum-var)))))
+
+(defmacro beginend--double-tap-begin (&rest body)
+  "Evaluate BODY and go-to `point-min' if point did not move."
+  (declare (debug (body)))
+  `(beginend--double-tap (point-min)
+     ,@body))
 
 (defmacro beginend--double-tap-end (&rest body)
-  "Evaluate &BODY and goto real end if that did not change point."
+  "Evaluate BODY and go-to `point-max' if point did not move."
   (declare (debug (body)))
-  (let ((tempvar (make-symbol "old-position")))
-    `(let ((,tempvar (point)))
-       (goto-char (point-max))
-       ,@body
-       (when (equal ,tempvar (point))
-         (goto-char (point-max))))))
+  `(beginend--double-tap (point-max)
+     ,@body))
 
 (defvar beginend-modes
   '(
