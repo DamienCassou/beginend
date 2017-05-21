@@ -250,6 +250,32 @@ BEGIN-BODY and END-BODY are two `progn' expressions passed to respectively
     (magit-section-backward)
     (magit-section-backward)))
 
+;; Copy/pasted from expand-region
+(defun beginend--point-is-in-comment-p ()
+  "Return non-nil if point is in comment."
+  (or (nth 4 (syntax-ppss))
+      (memq (get-text-property (point) 'face)
+            '(font-lock-comment-face font-lock-comment-delimiter-face))))
+
+(defun beginend--prog-mode-code-position-p ()
+  "Return non-nil if point, at beginning of line, is inside code."
+  (not
+   (or (beginend--point-is-in-comment-p)
+       (= (point) (line-end-position))
+       (looking-at (char-to-string ?\f))))) ;; form-feed (^L)
+
+(beginend-define-mode prog-mode
+  (progn
+    (while (not (or (eobp)
+                    (beginend--prog-mode-code-position-p)))
+      (forward-line)))
+  (progn
+    (while (not (or (bobp)
+                    (beginend--prog-mode-code-position-p)))
+      (forward-line -1))))
+
+
+
 ;;;###autoload
 (defun beginend-setup-all ()
   "Use beginend on all compatible modes.
