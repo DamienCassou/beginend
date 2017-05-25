@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/DamienCassou/beginend.svg?branch=master)](https://travis-ci.org/DamienCassou/beginend)
+[![Coverage Status](https://coveralls.io/repos/github/DamienCassou/beginend/badge.svg)](https://coveralls.io/github/DamienCassou/beginend)
 
 # beginend
 
