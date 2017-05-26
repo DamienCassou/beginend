@@ -240,6 +240,16 @@ BEGIN-BODY and END-BODY are two `progn' expressions passed to respectively
   (progn
     (prodigy-last)))
 
+(declare-function magit-section-backward "magit-section")
+
+(beginend-define-mode magit-status-mode
+  (progn
+    (re-search-forward "^$")
+    (forward-line))
+  (progn
+    (magit-section-backward)
+    (magit-section-backward)))
+
 ;;;###autoload
 (defun beginend-setup-all ()
   "Use beginend on all compatible modes.
