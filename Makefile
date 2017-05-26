@@ -35,7 +35,7 @@ clean-all : clean
 	rm -rf $(PKG_DIR)
 
 clean-elc :
-	rm -f *.elc
+	rm -f *.elc test/*.elc
 
 clean : clean-elc
 	rm -rf $(DIST)
