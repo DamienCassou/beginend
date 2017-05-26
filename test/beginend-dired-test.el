@@ -62,7 +62,7 @@ SPEC is a list of symbols representing features to activate."
         (expect (looking-back "dir2" 4) :to-be-truthy))
       (kill-buffer))))
 
-(describe "buttercup in a dired buffer"
+(describe "beginend in a dired buffer"
   (describe "without dired-hide-details-mode"
     (describe "without dired-omit-mode"
       (it "offers a command to go to first file"
