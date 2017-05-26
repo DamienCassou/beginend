@@ -58,7 +58,8 @@
     `(let ((,oldpos-var (point))
            (,extremum-var ,extremum))
        (goto-char ,extremum-var)
-       ,@body
+       (unless (buffer-narrowed-p)
+         ,@body)
        (if (= ,oldpos-var (point))
            (goto-char ,extremum-var)
          (when (/= ,oldpos-var ,extremum-var)
