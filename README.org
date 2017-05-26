@@ -22,6 +22,7 @@ In particular, these modes are supported:
 | *Mode*                | ~M-<~                   | ~M->~                      |
 |-----------------------+-------------------------+----------------------------|
 | *dired-mode*          | first file              | last file                  |
+| *magit-status-mode*   | first section           | last section               |
 | *message-mode*        | first body line         | last line before signature |
 | *occur-mode*          | first match             | last match                 |
 | *ibuffer-mode*        | first buffer            | last buffer                |
@@ -62,8 +63,10 @@ or ~end-of-buffer~).
 
 The following shows some screencasts.
 
-*** Dired-mode
+*** Dired mode
 [[file:media/beginend-dired-mode.gif]]
+*** Magit status mode
+[[file:media/beginend-magit-mode.gif]]
 *** Message mode
 [[file:media/beginend-message-mode.gif]]
 *** Occur mode
