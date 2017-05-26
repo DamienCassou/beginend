@@ -1,4 +1,4 @@
-;;; beginend-test.el --- Tests from beginend         -*- lexical-binding: t; -*-
+;;; beginend-test.el --- Tests for mark support in beginend         -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2017  Damien Cassou
 
