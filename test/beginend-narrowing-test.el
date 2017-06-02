@@ -33,79 +33,97 @@
 (define-error 'dont-call-me "This code should not have been called" 'error)
 
 (defun beginend--goto-begin ()
-  "Raise error."
+  "Go to point 2."
   (beginend--double-tap-begin
-   (signal 'dont-call-me t)))
+   (goto-char 2)))
 
 (defun beginend--goto-end ()
-  "Raise error."
+  "Go to point 2."
   (beginend--double-tap-end
-   (signal 'dont-call-me t)))
+   (goto-char 2)))
 
 (describe "beginend, when narrowing is active,"
 
   (before-each
     (spy-on 'message)) ;; disable "Mark activated/Mark set" messages
 
-  (it "does not call double-tap code when going to beginning"
-    (with-temp-buffer
-      (insert "foo bar baz\n")
-      (narrow-to-region 3 5)
-      (expect #'beginend--goto-begin :not :to-throw 'dont-call-me)))
-
-  (it "does not call double-tap code when going to end"
-    (with-temp-buffer
-      (insert "foo bar baz\n")
-      (narrow-to-region 3 5)
-      (expect #'beginend--goto-end :not :to-throw 'dont-call-me)))
-
-  (it "goes to point-min when going to beginning"
+  (it "goes to point-min if beginning is outside the narrowed region"
     (with-temp-buffer
       (insert "foo bar baz\n")
       (narrow-to-region 3 5)
       (beginend--goto-begin)
       (expect (point) :to-be (point-min))))
 
-  (it "goes to point-max when going to end"
+  (it "goes to beginning if beginning is inside the narrowed region"
+    (with-temp-buffer
+      (insert "foo bar baz\n")
+      (narrow-to-region 1 3)
+      (beginend--goto-begin)
+      (expect (point) :to-be 2)))
+
+  (it "goes to point-max if end is outside the narrowed region"
     (with-temp-buffer
       (insert "foo bar baz\n")
       (narrow-to-region 3 5)
       (beginend--goto-end)
       (expect (point) :to-be (point-max))))
 
-  (it "marks position when going to beginning"
-    (let ((marker-point 4))
-      (with-temp-buffer
-        (insert "foo bar baz\n")
-        (narrow-to-region 3 5)
-        (goto-char marker-point)
-        (beginend--goto-begin)
-        (expect (mark) :to-be marker-point))))
-
-  (it "marks position when going to end"
-    (let ((marker-point 4))
-      (with-temp-buffer
-        (insert "foo bar baz\n")
-        (narrow-to-region 3 5)
-        (goto-char marker-point)
-        (beginend--goto-end)
-        (expect (mark) :to-be marker-point))))
-
-  (it "does not mark point-min when going to beginning"
+  (it "goes to end if end is inside the narrowed region"
     (with-temp-buffer
       (insert "foo bar baz\n")
-      (narrow-to-region 3 5)
-      (goto-char (point-min))
-      (beginend--goto-begin)
-      (expect (mark) :to-be nil)))
-
-  (it "does not mark point-max when going to end"
-    (with-temp-buffer
-      (insert "foo bar baz\n")
-      (narrow-to-region 3 5)
-      (goto-char (point-max))
+      (narrow-to-region 1 3)
       (beginend--goto-end)
-      (expect (mark) :to-be nil))))
+      (expect (point) :to-be 2)))
+
+  (describe "does not move point"
+    (it "when going to beginning and beginning outside the narrowed region if point is already at point-min"
+      (with-temp-buffer
+        (insert "foo bar baz\n")
+        (narrow-to-region 3 5)
+        (goto-char (point-min))
+        (beginend--goto-begin)
+        (expect (point) :to-be (point-min))))
+
+    (it "when going to end and end outside the narrowed region if point is already at point-max"
+      (with-temp-buffer
+        (insert "foo bar baz\n")
+        (narrow-to-region 3 5)
+        (goto-char (point-max))
+        (beginend--goto-end)
+        (expect (point) :to-be (point-max)))))
+
+  (describe "does not mark"
+    (it "when going to beginning and beginning outside the narrowed region if point is already at point-min"
+      (with-temp-buffer
+        (insert "foo bar baz\n")
+        (narrow-to-region 3 5)
+        (goto-char (point-min))
+        (beginend--goto-begin)
+        (expect (mark) :to-be nil)))
+
+    (it "when going to end and end outside the narrowed region if point is already at point-max"
+      (with-temp-buffer
+        (insert "foo bar baz\n")
+        (narrow-to-region 3 5)
+        (goto-char (point-max))
+        (beginend--goto-end)
+        (expect (mark) :to-be nil))))
+
+  (describe "correctly detects out of bounds"
+    (it "when point is before point-min"
+      (with-temp-buffer
+        (insert "123")
+        (expect (beginend--out-of-bounds-p 0) :to-be t)))
+
+    (it "when point is after point-max"
+      (with-temp-buffer
+        (insert "123")
+        (expect (beginend--out-of-bounds-p 5) :to-be t)))
+
+    (it "when point is between point-min point-max"
+      (with-temp-buffer
+        (insert "123")
+        (expect (beginend--out-of-bounds-p 2) :to-be nil)))))
 
 (provide 'beginend-narrowing-test)
 ;;; beginend-narrowing-test.el ends here

@@ -50,18 +50,28 @@
   (re-search-backward "[^[:space:]]" nil t)
   (forward-char))
 
+(defun beginend--out-of-bounds-p (point)
+  "Return non-nil if POINT is outside [`point-min', `point-max'].
+This is possible if buffer was narrowed after POINT was stored."
+  (not (<= (point-min) point (point-max))))
+
 (defmacro beginend--double-tap (extremum &rest body)
   "Go to point EXTREMUM if executing BODY did not change point."
   (declare (debug (form body))
            (indent 1))
   (let ((oldpos-var (make-symbol "old-position"))
+        (newpos-var (make-symbol "new-position"))
         (extremum-var (make-symbol "extremum")))
     `(let ((,oldpos-var (point))
+           (,newpos-var nil)
            (,extremum-var ,extremum))
        (goto-char ,extremum-var)
-       (unless (buffer-narrowed-p)
-         ,@body)
-       (if (= ,oldpos-var (point))
+       (save-restriction
+         (widen)
+         ,@body
+         (setq ,newpos-var (point)))
+       (if (or (beginend--out-of-bounds-p ,newpos-var)
+               (= ,oldpos-var ,newpos-var))
            (goto-char ,extremum-var)
          (when (/= ,oldpos-var ,extremum-var)
            (push-mark ,oldpos-var))))))
