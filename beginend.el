@@ -2,7 +2,8 @@
 
 ;; Copyright (C) 2015-2017 Damien Cassou
 
-;; Author: Damien Cassou <damien@cassou.me>
+;; Authors: Damien Cassou <damien@cassou.me>
+;;          Matus Goljer <matus.goljer@gmail.com>
 ;; Version: 1.1.0
 ;; GIT: https://github.com/DamienCassou/beginend
 ;; Package-Requires: ((emacs "24.4"))
