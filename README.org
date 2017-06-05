@@ -1,0 +1,78 @@
+* Beginend
+  #+BEGIN_HTML
+      <p>
+        <a href="https://travis-ci.org/DamienCassou/beginend">
+          <img src="https://travis-ci.org/DamienCassou/beginend.svg?branch=master" alt="Build Status" />
+        </a>
+        <a href='https://coveralls.io/github/DamienCassou/beginend?branch=master'>
+          <img src='https://coveralls.io/repos/github/DamienCassou/beginend/badge.svg?branch=master' alt='Coverage Status' />
+        </a>
+      </p>
+  #+END_HTML
+
+** Summary
+
+Redefine ~M-<~ and ~M->~ (or any key bound to ~beginning-of-buffer~ or
+~end-of-buffer~) for some modes so that point moves to meaningful
+locations. The real beginning and end of buffers are still accessible
+by pressing the same key again.
+
+In particular, these modes are supported:
+
+| *Mode*                | ~M-<~                   | ~M->~                      |
+|-----------------------+-------------------------+----------------------------|
+| *dired-mode*          | first file              | last file                  |
+| *message-mode*        | first body line         | last line before signature |
+| *occur-mode*          | first match             | last match                 |
+| *ibuffer-mode*        | first buffer            | last buffer                |
+| *bs-mode*             | first buffer            | last buffer                |
+| *vc-dir-mode*         | first interesting file  | last interesting file      |
+| *recentf-dialog-mode* | first most recent file  | last most recent file      |
+| *org-agenda-mode*     | first agenda item       | last agenda item           |
+| *compilation-mode*    | first compilation error | last compilation error     |
+| *notmuch-search-mode* | first thread            | last thread                |
+| *elfeed-mode*         | first feed              | last feed                  |
+| *prodigy-mode*        | first service           | last service               |
+
+
+Adding new modes is a matter of a few lines of code.
+
+** Installing
+
+Use [[http://melpa.org/][melpa]].
+
+You can activate beginend for all modes it supports by customizing the
+variable ~beginend-global-mode~ (~M-x customize-variable RET
+beginend-global-mode RET~) or by adding this line to your
+configuration file:
+
+#+BEGIN_SRC emacs-lisp
+(beginend-global-mode)
+#+END_SRC
+
+You can also decide to only activate beginend for some of its
+supported modes. Activate the dedicated beginend mode then (e.g.,
+~beginend-dired-mode~).
+
+** Using
+
+At this point, newly opened supported buffers will get improved
+versions of ~M-<~ and ~M->~ (or any key bound to ~beginning-of-buffer~
+or ~end-of-buffer~).
+
+The following shows some screencasts.
+
+*** Dired-mode
+[[file:media/beginend-dired-mode.gif]]
+*** Message mode
+[[file:media/beginend-message-mode.gif]]
+*** Occur mode
+[[file:media/beginend-occur-mode.gif]]
+
+** Contributing
+
+Yes, please do! See [[file:CONTRIBUTING.md][CONTRIBUTING]] for guidelines.
+
+** License
+
+See [[file:COPYING][COPYING]]. Copyright (c) 2017 [[mailto:damien@cassou.me][Damien Cassou]] and [[mailto:matus.goljer@gmail.com][Matus Goljer]].
