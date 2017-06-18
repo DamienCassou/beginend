@@ -59,7 +59,7 @@ SPEC is a list of symbols representing features to activate."
             (beginend-dired-mode-goto-beginning)
             (expect (looking-at "dir1") :to-be-truthy))
         (beginend-dired-mode-goto-end)
-        (expect (looking-back "dir2" 4) :to-be-truthy))
+        (expect (looking-at "dir2") :to-be-truthy))
       (kill-buffer))))
 
 (describe "beginend in a dired buffer"
