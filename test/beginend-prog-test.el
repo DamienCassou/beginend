@@ -39,40 +39,40 @@
 
 (describe "buttercup"
   (describe "in prog-mode"
+    (before-each
+      (spy-on #'beginend--prog-mode-code-position-p
+              :and-call-fake (lambda ()
+                               (<= 3 (line-number-at-pos) 5))))
+
     (it "uses prog-mode-code-position-p to know where code begins"
       (with-temp-buffer
         (insert "line1\nline2\nline3\nline4\nline5\nline6\nline7\n")
         (goto-char 2)
-        ;; workaround for https://github.com/jorgenschaefer/emacs-buttercup/issues/84
-        (cl-letf (((symbol-function 'beginend--prog-mode-code-position-p)
-                   (lambda ()
-                     (let ((line (line-number-at-pos)))
-                       (and (>= line 3) (<= line 5))))))
-          (beginend-prog-mode-goto-beginning))
-        (expect (looking-at "line3") :to-be-truthy)))
+        (beginend-prog-mode-goto-beginning)
+        (expect #'beginend--prog-mode-code-position-p :to-have-been-called)))
 
     (it "uses prog-mode-code-position-p to know where code end"
       (with-temp-buffer
         (insert "line1\nline2\nline3\nline4\nline5\nline6\nline7\n")
         (goto-char 2)
+        (beginend-prog-mode-goto-end)
+        (expect #'beginend--prog-mode-code-position-p :to-have-been-called)))
+
+    (it "moves point to beginning of first code line"
+      (with-temp-buffer
+        (insert "line1\nline2\nline3\nline4\nline5\nline6\nline7\n")
+        (goto-char 2)
         ;; workaround for https://github.com/jorgenschaefer/emacs-buttercup/issues/84
-        (cl-letf (((symbol-function 'beginend--prog-mode-code-position-p)
-                   (lambda ()
-                     (let ((line (line-number-at-pos)))
-                       (and (>= line 3) (<= line 5))))))
-          (beginend-prog-mode-goto-end))
-        (expect (line-number-at-pos) :to-be 5)))
+        (beginend-prog-mode-goto-beginning)
+        (expect (line-number-at-pos) :to-be 3)
+        (expect (point) :to-be (line-beginning-position))))
 
     (it "moves point to end of last code line"
       (with-temp-buffer
         (insert "line1\nline2\nline3\nline4\nline5\nline6\nline7\n")
         (goto-char 2)
         ;; workaround for https://github.com/jorgenschaefer/emacs-buttercup/issues/84
-        (cl-letf (((symbol-function 'beginend--prog-mode-code-position-p)
-                   (lambda ()
-                     (let ((line (line-number-at-pos)))
-                       (and (>= line 3) (<= line 5))))))
-          (beginend-prog-mode-goto-end))
+        (beginend-prog-mode-goto-end)
         (expect (line-number-at-pos) :to-be 5)
         (expect (point) :to-be (line-end-position)))))
 
