@@ -53,7 +53,7 @@
 
     (it "uses prog-mode-code-position-p to know where code end"
       (with-temp-buffer
-        (insert "line1\nline2\nline3\nline4\nline5\nline6\line7\n")
+        (insert "line1\nline2\nline3\nline4\nline5\nline6\nline7\n")
         (goto-char 2)
         ;; workaround for https://github.com/jorgenschaefer/emacs-buttercup/issues/84
         (cl-letf (((symbol-function 'beginend--prog-mode-code-position-p)
@@ -61,7 +61,20 @@
                      (let ((line (line-number-at-pos)))
                        (and (>= line 3) (<= line 5))))))
           (beginend-prog-mode-goto-end))
-        (expect (looking-at "line5") :to-be-truthy))))
+        (expect (line-number-at-pos) :to-be 5)))
+
+    (it "moves point to end of last code line"
+      (with-temp-buffer
+        (insert "line1\nline2\nline3\nline4\nline5\nline6\nline7\n")
+        (goto-char 2)
+        ;; workaround for https://github.com/jorgenschaefer/emacs-buttercup/issues/84
+        (cl-letf (((symbol-function 'beginend--prog-mode-code-position-p)
+                   (lambda ()
+                     (let ((line (line-number-at-pos)))
+                       (and (>= line 3) (<= line 5))))))
+          (beginend-prog-mode-goto-end))
+        (expect (line-number-at-pos) :to-be 5)
+        (expect (point) :to-be (line-end-position)))))
 
   (describe "beginend--prog-mode-code-position-p"
     (it "returns non-nil for a line of code"
