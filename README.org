@@ -14,8 +14,8 @@
 
 Redefine ~M-<~ and ~M->~ (or any key bound to ~beginning-of-buffer~ or
 ~end-of-buffer~) for some modes so that point moves to meaningful
-locations. The real beginning and end of buffers are still accessible
-by pressing the same key again.
+locations. The real beginning and end of buffers (i.e., ~point-min~
+and ~point-max~) are still accessible by pressing the same key again.
 
 In particular, these modes are supported:
 
@@ -36,8 +36,7 @@ In particular, these modes are supported:
 | *elfeed-mode*         | first feed              | last feed                  |
 | *prodigy-mode*        | first service           | last service               |
 
-
-Adding new modes is a matter of a few lines of code.
+Finally, beginend does what you expect when your buffer is narrowed.
 
 ** Installing
 
@@ -53,8 +52,7 @@ configuration file:
 #+END_SRC
 
 You can also decide to only activate beginend for some of its
-supported modes. Activate the dedicated beginend mode then (e.g.,
-~beginend-dired-mode~).
+supported major modes (e.g., through ~beginend-dired-mode~).
 
 ** Using
 
@@ -62,7 +60,9 @@ At this point, newly opened supported buffers will get improved
 versions of ~M-<~ and ~M->~ (or any key bound to ~beginning-of-buffer~
 or ~end-of-buffer~).
 
-The following shows some screencasts.
+The following shows some screencasts. In each screencast, the cursor
+is moved to the meaningful beginning and end and to the real beginning
+and end.
 
 *** Dired mode
 [[file:media/beginend-dired-mode.gif]]
@@ -78,6 +78,25 @@ The following shows some screencasts.
 ** Contributing
 
 Yes, please do! See [[file:CONTRIBUTING.md][CONTRIBUTING]] for guidelines.
+
+Adding new modes is a matter of a few lines of code. For example,
+these five lines (already included) define the behavior of beginend in
+~org-agenda-mode~:
+
+#+BEGIN_SRC emacs-lisp
+(beginend-define-mode org-agenda-mode
+  (progn
+    (org-agenda-next-item 1))
+  (progn
+    (org-agenda-previous-item 1)))
+#+END_SRC
+
+The first ~progn~ is responsible for moving point to the meaningful
+beginning of buffer. Before being executed, point is at the real
+beginning of the buffer (i.e., ~point-min~). The expression
+~(org-agenda-next-item 1)~ thus moves to the first agenda item.
+Similarly, the second ~progn~ is responsible for moving point to the
+meaningful end of buffer starting from real end (i.e., ~point-max~).
 
 ** License
 

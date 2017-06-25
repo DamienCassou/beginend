@@ -34,12 +34,3 @@ Write meaningful docstrings for all functions and vars.
 - Document all functions and variables as directed by `checkdoc`.
 - Consider using [Flycheck](https://github.com/flycheck/flycheck) to automate
   `checkdoc` while you're editing.
-
-### Common Lisp functions
-
-Use `cl-lib` instead of `cl`. The `cl` library pollutes the global namespace and
-its usage is therefore discouraged.
-
-- Use `cl-lib`, which adds prefixes to all cl function names
-- Use [noflet](https://github.com/nicferrier/emacs-noflet) instead of `flet`
-  when you need to dynamically rebind functions.

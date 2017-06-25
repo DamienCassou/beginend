@@ -26,14 +26,20 @@
 
 ;;; Commentary:
 
-;; Redefine M-< and M-> for some modes
+;; Redefine M-< and M-> for some modes.  For example,
 ;;
-;; - in dired mode, M-< (respectively M->) go to first (respectively last) file
-;;   line
+;; - in dired mode, M-< (respectively M->) goes to first (respectively last)
+;;   file line
 ;;
 ;; - in message mode,
-;;    - M-< go to first line of message body (after headings)
-;;    - M-> go to last line before message signature
+;;    - M-< goes to first line of message body (after headings)
+;;    - M-> goes to last line before message signature
+;;
+;; - in prog-mode,
+;;    - M-< goes to the first line after comments
+;;    - M-> goes to the last line before comments
+;;
+;; Many more modes are supported.
 ;;
 ;;; Code:
 
