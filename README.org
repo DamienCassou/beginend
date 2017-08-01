@@ -12,6 +12,8 @@
 
 ** Summary
 
+You might want to read the [[https://emacs.cafe/emacs/package/2017/08/01/beginend.html][introductory blog post]].
+
 Redefine ~M-<~ and ~M->~ (or any key bound to ~beginning-of-buffer~ or
 ~end-of-buffer~) for some modes so that point moves to meaningful
 locations. The real beginning and end of buffers (i.e., ~point-min~
