@@ -330,6 +330,7 @@ modes are described in `beginend-modes'."
           (remove-hook (car pair) (cdr pair)))
         beginend-modes))
 
+;;;###autoload
 (define-minor-mode beginend-global-mode
   "Toggle beginend mode.
 Interactively with no argument, this command toggles the mode.  A positive
