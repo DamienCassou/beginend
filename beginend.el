@@ -163,10 +163,12 @@ BEGIN-BODY and END-BODY are two `progn' expressions passed to respectively
       (when (and (boundp 'dired-omit-mode) dired-omit-mode)
         ;; dired-omit-mode hides `.' and `..'.
         (setf move (- move 2)))
-      (when (and (boundp 'dired-hide-details-hide-information-lines)
-                 dired-hide-details-hide-information-lines
-                 (boundp 'dired-hide-details-mode)
-                 dired-hide-details-mode)
+      (when (or (and (boundp 'dired-hide-details-hide-information-lines)
+                     dired-hide-details-hide-information-lines
+                     (boundp 'dired-hide-details-mode)
+                     dired-hide-details-mode)
+                (and (boundp 'dired-details-state)
+                     (equal dired-details-state 'hidden)))
         ;; 1 line containing directory size
         (setf move (- move 1)))
       (dired-next-line move)))
