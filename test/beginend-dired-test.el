@@ -33,80 +33,111 @@
 (require 'dired)
 (require 'dired-x)
 
-(defun beginend-create-dired-buffer ()
-  "Create and return a buffer ressembling a dired one."
-  (assess-with-filesystem '("dir1/" "dir2/")
-    (dired default-directory)
-    (current-buffer)))
+(require 'seq)
 
-(defun beginend-dired-test (&rest spec)
-  "Test dired from SPEC.
-SPEC is a list of symbols representing features to activate."
-  (let* ((begin-p (seq-contains spec 'begin-p))
-         (omit (seq-contains spec 'omit))
-         (hide-details (seq-contains spec 'hide-details))
-         (hide-info-lines (not (seq-contains spec 'keep-info-lines)))
-         (dired-hide-details-hide-information-lines hide-info-lines)
-         (dired-omit-verbose nil))
-    (with-current-buffer (beginend-create-dired-buffer)
-      (goto-char 2) ;; any position
-      (when omit
-        (dired-omit-mode))
-      (when hide-details
-        (dired-hide-details-mode))
-      (if begin-p
-          (progn
-            (beginend-dired-mode-goto-beginning)
-            (expect (looking-at "dir1") :to-be-truthy))
-        (beginend-dired-mode-goto-end)
-        (expect (looking-at "dir2") :to-be-truthy))
-      (kill-buffer))))
+(defun beginend-create-dired-buffer (entries)
+  "Create and return a buffer resembling a dired one.
+
+ENTRIES is the file list.  The order is important.  ENTRIES are listed in that
+order."
+  (let ((spec (seq-filter (lambda (x) (not (member x '("." "..")))) entries)))
+    (assess-with-filesystem spec
+      (dired (cons default-directory entries))
+      (current-buffer))))
+
+(defun beginend-dired-test (fn location)
+  "Execute FN at `point-min' and check that point is at the LOCATION.
+This function moves point to `point-min' and executes FN with no parameter.
+Then checks whether the point is at the LOCATION.
+If LOCATION is a string, checks that point is at the beginning of the filename.
+If LOCATION is a integer, checks that point is at this line.
+If LOCATION is `bob', checks that point is at `point-min'.
+If LOCATION is `eob', checks that point is at `point-max'.
+Other values are invalid.  In this case, this function signals an error."
+  (goto-char (point-min))
+  (funcall fn)
+  (cond ((stringp location)
+         (expect (looking-at location) :to-be-truthy))
+        ((integerp location)
+         (expect location :to-equal (line-number-at-pos)))
+        ((eq location 'bob)
+         (expect (bobp) :to-be-truthy))
+        ((eq location 'eob)
+         (expect (eobp) :to-be-truthy))
+        (t
+         (error "Invalid test value: %s" location))))
+
+(defun beginend-dired-test-begin (location)
+  "Move the point to the first file line of current buffer.
+Then checks whether the point is at the LOCATION.
+If LOCATION is a string, checks that point is at the beginning of the filename.
+If LOCATION is a integer, checks that point is at this line.
+If LOCATION is `bob', checks that point is at `point-min'.
+If LOCATION is `eob', checks that point is at `point-max'.
+Other value are invalid.  In this case, this function signals an error."
+  (beginend-dired-test 'beginend-dired-mode-goto-beginning location))
+
+(defun beginend-dired-test-end (location)
+  "Move the point to the last file line of current buffer.
+Then checks whether the point is at the position.
+If LOCATION is a string, checks that point is at the beginning of the filename.
+If LOCATION is a integer, checks that point is at this line.
+If LOCATION is `bob', checks that point is at `point-min'.
+If LOCATION is `eob', checks that point is at `point-max'.
+Other value are invalid.  In this case, this function signals an error."
+  (beginend-dired-test 'beginend-dired-mode-goto-end location))
+
+(defmacro with-beginend-dired-test-buffer (entries &rest body)
+  "Create a temporary directory with ENTRIES and execute BODY.
+
+ENTRIES is a list of all filenames to display, in the same order, in the dired
+buffer.
+
+Execute the forms in BODY within the dired buffer of the directory."
+  (declare (indent 1))
+  `(with-current-buffer (beginend-create-dired-buffer ,entries)
+     ,@body))
 
 (describe "beginend in a dired buffer"
-  (describe "without dired-hide-details-mode"
-    (describe "without dired-omit-mode"
-      (it "offers a command to go to first file"
-        (beginend-dired-test 'begin-p))
+  (it "ignores . and .. at the beginning"
+    (with-beginend-dired-test-buffer '("." ".." "dir1" "dir2")
+      (beginend-dired-test-begin "dir1")
+      (beginend-dired-test-end "dir2")))
 
-      (it "offers a command to go to last file"
-        (beginend-dired-test)))
+  (it "ignores . and .. at the end"
+    (with-beginend-dired-test-buffer '("dir1" "dir2" "." "..")
+      (beginend-dired-test-begin "dir1")
+      (beginend-dired-test-end "dir2")))
 
-    (describe "with dired-omit-mode"
-      (it "offers a command to go to first file"
-        (beginend-dired-test 'begin-p 'omit))
+  (it "ignores . at the beginning and .. at the end"
+    (with-beginend-dired-test-buffer '("." "dir1" "dir2" "..")
+      (beginend-dired-test-begin "dir1")
+      (beginend-dired-test-end "dir2")))
 
-      (it "offers a command to go to last file with dired-omit-mode"
-        (beginend-dired-test 'omit))))
+  (it "ignores . and .. in the middle"
+    (with-beginend-dired-test-buffer '("dir1" "." ".." "dir2")
+      (beginend-dired-test-begin "dir1")
+      (beginend-dired-test-end "dir2")))
 
-  (describe "with-dired-hide-details-mode (also hides information lines)"
-    (describe "without dired-omit-mode"
-      (it "offers a command to go to first file"
-        (beginend-dired-test 'begin-p 'hide-details))
+  (it "ignores . and .. when they are hidden"
+    (with-beginend-dired-test-buffer '("dir1" "dir2")
+      (beginend-dired-test-begin "dir1")
+      (beginend-dired-test-end "dir2")))
 
-      (it "offers a command to go to last file with dired-omit-mode"
-        (beginend-dired-test 'hide-details)))
+  (it "ignores . and .. when they are not hidden"
+    (with-beginend-dired-test-buffer '(".." "dir2" "." "dir1")
+      (beginend-dired-test-begin 3)
+      (beginend-dired-test-end 5)))
 
-    (describe "with dired-omit-mode"
-      (it "offers a command to go to first file"
-        (beginend-dired-test 'begin-p 'omit 'hide-details))
+  (it "ignores . and .. when they are hidden and the directory is empty"
+    (with-beginend-dired-test-buffer '()
+      (beginend-dired-test-begin 'bob)
+      (beginend-dired-test-end 'eob)))
 
-      (it "offers a command to go to last file with dired-omit-mode"
-        (beginend-dired-test 'omit 'hide-details))))
-
-  (describe "with-dired-hide-details-mode (does not hide information lines)"
-    (describe "without dired-omit-mode"
-      (it "offers a command to go to first file"
-        (beginend-dired-test 'begin-p 'hide-details 'keep-info-lines))
-
-      (it "offers a command to go to last file with dired-omit-mode"
-        (beginend-dired-test 'hide-details 'keep-info-lines)))
-
-    (describe "with dired-omit-mode"
-      (it "offers a command to go to first file"
-        (beginend-dired-test 'begin-p 'omit 'hide-details 'keep-info-lines))
-
-      (it "offers a command to go to last file with dired-omit-mode"
-        (beginend-dired-test 'omit 'hide-details 'keep-info-lines)))))
+  (it "ignores . and .. when they are not hidden and the directory is empty"
+    (with-beginend-dired-test-buffer '("." "..")
+      (beginend-dired-test-begin 'bob)
+      (beginend-dired-test-end 'eob))))
 
 (provide 'beginend-dired-test)
 ;;; beginend-dired-test.el ends here

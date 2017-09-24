@@ -155,26 +155,30 @@ BEGIN-BODY and END-BODY are two `progn' expressions passed to respectively
       (beginend--goto-nonwhitespace))))
 
 (declare-function dired-next-line "dired")
+(declare-function dired-previous-line "dired")
+(declare-function dired-get-filename "dired")
 (declare-function dired-move-to-filename "dired")
+
+(defun beginend--dired-on-file-p ()
+  "Return non-nil if point is on a file.
+`.' and `..' are not considered files."
+  (ignore-errors (dired-get-filename 'no-dir)))
 
 (beginend-define-mode dired-mode
   (progn
-    (let ((move 4))
-      (when (and (boundp 'dired-omit-mode) dired-omit-mode)
-        ;; dired-omit-mode hides `.' and `..'.
-        (setf move (- move 2)))
-      (when (or (and (boundp 'dired-hide-details-hide-information-lines)
-                     dired-hide-details-hide-information-lines
-                     (boundp 'dired-hide-details-mode)
-                     dired-hide-details-mode)
-                (and (boundp 'dired-details-state)
-                     (equal dired-details-state 'hidden)))
-        ;; 1 line containing directory size
-        (setf move (- move 1)))
-      (dired-next-line move)))
+    (while (and (not (beginend--dired-on-file-p))
+                (not (eobp)))
+      (dired-next-line 1))
+    (if (eobp)
+        (goto-char (point-min))
+      (dired-move-to-filename)))
   (progn
-    (beginend--goto-nonwhitespace)
-    (dired-move-to-filename)))
+    (while (and (not (beginend--dired-on-file-p))
+                (not (bobp)))
+      (dired-previous-line 1))
+    (if (bobp)
+        (goto-char (point-max))
+      (dired-move-to-filename))))
 
 (beginend-define-mode occur-mode
   (progn
