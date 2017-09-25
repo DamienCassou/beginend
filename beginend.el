@@ -343,6 +343,7 @@ state.
 When beginend mode is enabled, modes such as `dired-mode', `message-mode'
 and `compilation-mode' will have their \\[beginning-of-buffer] and
 \\[end-of-buffer] keys adapted to go to meaningful places."
+  :require 'beginend
   :lighter " be"
   :global t
   (if beginend-global-mode
