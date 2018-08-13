@@ -37,6 +37,7 @@ In particular, these modes are supported:
 | *notmuch-search-mode* | first thread            | last thread                |
 | *elfeed-mode*         | first feed              | last feed                  |
 | *prodigy-mode*        | first service           | last service               |
+| *deft-mode*           | first match             | last match                 |
 
 Finally, beginend does what you expect when your buffer is narrowed.
 
