@@ -283,6 +283,13 @@ BEGIN-BODY and END-BODY are two `progn' expressions passed to respectively
     (magit-section-backward)
     (magit-section-backward)))
 
+(beginend-define-mode deft-mode
+  (progn
+    (re-search-forward "^$")
+    (forward-line))
+  (progn
+    (forward-line -1)))
+
 (defun beginend--point-is-in-comment-p (&optional p)
   "Return non-nil if point is in comment.
 
