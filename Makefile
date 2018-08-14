@@ -1,66 +1,33 @@
-CASK        ?= cask
-EMACS       ?= emacs
-DIST        ?= dist
-EMACSFLAGS   = --batch -Q
-EMACSBATCH   = $(EMACS) $(EMACSFLAGS)
+PACKAGE_BASENAME = beginend
 
-VERSION     := $(shell EMACS=$(EMACS) $(CASK) version)
-PKG_DIR     := $(shell EMACS=$(EMACS) $(CASK) package-directory)
-PROJ_ROOT   := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
+export EMACS_VERSION?=26.1
 
-EMACS_D      = ~/.emacs.d
-USER_ELPA_D  = $(EMACS_D)/elpa
+PACKAGE_TEST_ARCHIVES=gnu melpa
+PACKAGE_TEST_DEPS=assess buttercup
 
-SRCS         = $(filter-out %-pkg.el, $(wildcard *.el))
-TESTS        = $(wildcard test/*.el)
-TAR          = $(DIST)/beginend-$(VERSION).tar
+CURL = curl --fail --silent --show-error --insecure --location --retry 9 --retry-delay 9
+GITHUB = https://raw.githubusercontent.com
 
+export CI=false
 
-.PHONY: all deps check test lint install uninstall reinstall clean-all clean clean-elc
-all : deps $(TAR)
+EMAKE_SHA1=3caabb0b5b2b0f42d242a18642d3d5d8b2320012
 
-deps :
-	$(CASK) install
+emake.mk:
+	$(CURL) -O ${GITHUB}/vermiculus/emake.el/${EMAKE_SHA1}/emake.mk
 
-install : $(TAR)
-	$(EMACSBATCH) -l package -f package-initialize \
-	--eval '(package-install-file "$(PROJ_ROOT)/$(TAR)")'
+# Include emake.mk if present
+-include emake.mk
 
-uninstall :
-	rm -rf $(USER_ELPA_D)/beginend-*
+.PHONY: check lint test
 
-reinstall : clean uninstall install
+check: lint test
 
-clean-all : clean
-	rm -rf $(PKG_DIR)
+# Run checkdoc and package-lint on test files too. I can't run compile
+# on test files because of
+# https://github.com/vermiculus/emake.el/issues/23
+lint-checkdoc: PACKAGE_LISP += ${PACKAGE_TESTS}
+lint-package-lint: PACKAGE_LISP += $(filter-out test/test-helper.el, ${PACKAGE_TESTS})
 
-clean-elc :
-	rm -f *.elc test/*.elc
+lint: lint-checkdoc lint-package-lint compile
 
-clean : clean-elc
-	rm -rf $(DIST)
-	rm -f *-pkg.el
-
-$(TAR) : $(DIST) $(SRCS)
-	$(CASK) package $(DIST)
-
-$(DIST) :
-	mkdir $(DIST)
-
-check : test lint
-
-test: unit
-
-unit: $(PKG_DIR) clean-elc
-	${CASK} exec buttercup -L .
-
-lint : $(SRCS) clean-elc
-	# Byte compile all and stop on any warning or error
-	${CASK} emacs $(EMACSFLAGS) \
-	--eval "(setq byte-compile-error-on-warn t)" \
-	-L . -f batch-byte-compile ${SRCS} ${EXAMPLES} ${TESTS}
-
-	# Run package-lint to check for packaging mistakes
-	${CASK} emacs $(EMACSFLAGS) \
-	-l package-lint.el \
-	-f package-lint-batch-and-exit ${SRCS}
+test: test-buttercup
