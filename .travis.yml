@@ -3,23 +3,14 @@ sudo: false
 
 before_install:
   - curl -fsSkL https://gist.github.com/rejeep/ebcd57c3af83b049833b/raw > travis.sh && source ./travis.sh
-  # Fix cask (See https://github.com/cask/cask/issues/399#issuecomment-331640427)
-  - perl -ibak -lape 's{#!/usr/bin/env python}{#!/usr/bin/python}' "$(which cask)"
-  # Check that cask is finding the right emacs
-  - cask emacs --version
-  - evm install $EVM_EMACS --use --skip
-  - make deps
+  - evm install emacs-${EMACS_VERSION}-travis --use --skip
 
 env:
-  - EVM_EMACS=emacs-24.5-travis
-  - EVM_EMACS=emacs-25.2-travis
-  - EVM_EMACS=emacs-25.3-travis
-  - EVM_EMACS=emacs-git-snapshot-travis
+  - EMACS_VERSION=25.3
+  - EMACS_VERSION=26.1
 
 matrix:
   fast_finish: true
-  allow_failures:
-    - env: EVM_EMACS=emacs-git-snapshot-travis
 
 script:
   - emacs --version

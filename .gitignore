@@ -4,9 +4,10 @@ README.html
 *-pkg.el
 *.tar
 TAGS
-doc/beginend.texi
-doc/beginend.info
+/*-autoloads.el
 
 # Packages
-.cask
-elpa
+/emake.el
+/emake.mk
+/.elpa.test
+/elpa
