@@ -1,8 +1,11 @@
-;;; beginend-test.el --- Tests for mark support in beginend         -*- lexical-binding: t; -*-
+;;; beginend-marks-test.el --- Tests for mark support in beginend         -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2017  Damien Cassou
 
 ;; Author: Damien Cassou <damien@cassou.me>
+;; Version: 2.0.0
+;; URL: https://github.com/DamienCassou/beginend
+;; Package-requires: ((emacs "24.4"))
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -19,7 +22,7 @@
 
 ;;; Commentary:
 
-;;
+;; Tests for mark support in beginend.
 
 ;;; Code:
 
@@ -30,12 +33,12 @@
 
 (require 'beginend)
 
-(defun beginend--goto-begin-2 ()
+(defun beginend-marks-test--goto-begin-2 ()
   "Go to point 2 of current buffer with `beginend--double-tap-begin'."
   (beginend--double-tap-begin
    (goto-char 2)))
 
-(defun beginend--goto-end-2 ()
+(defun beginend-marks-test--goto-end-2 ()
   "Go to point 2 of current buffer with `beginend--double-tap-end'."
   (beginend--double-tap-end
    (goto-char 2)))
@@ -54,7 +57,7 @@
              (insert "foo bar baz\n")
              (goto-char marker-point)
              (expect (mark) :to-be nil)
-             (beginend--goto-begin-2)
+             (beginend-marks-test--goto-begin-2)
              (expect (length mark-ring) :to-be 0)
              (expect (point) :to-be 2)
              (expect (mark) :to-be marker-point)))))
@@ -66,9 +69,9 @@
              (insert "foo bar baz\n")
              (goto-char marker-point)
              (expect (length mark-ring) :to-be 0)
-             (beginend--goto-begin-2)
+             (beginend-marks-test--goto-begin-2)
              (expect (length mark-ring) :to-be 0)
-             (beginend--goto-begin-2)
+             (beginend-marks-test--goto-begin-2)
              (expect (length mark-ring) :to-be 0))))))
 
     (describe "when going to end"
@@ -79,7 +82,7 @@
              (insert "foo bar baz\n")
              (goto-char marker-point)
              (expect (mark) :to-be nil)
-             (beginend--goto-end-2)
+             (beginend-marks-test--goto-end-2)
              (expect (length mark-ring) :to-be 0)
              (expect (point) :to-be 2)
              (expect (mark) :to-be marker-point)))))
@@ -91,9 +94,9 @@
              (insert "foo bar baz\n")
              (goto-char marker-point)
              (expect (length mark-ring) :to-be 0)
-             (beginend--goto-end-2)
+             (beginend-marks-test--goto-end-2)
              (expect (length mark-ring) :to-be 0)
-             (beginend--goto-end-2)
+             (beginend-marks-test--goto-end-2)
              (expect (length mark-ring) :to-be 0)))))))
 
   (describe "does not push mark"
@@ -104,7 +107,7 @@
            (insert "foo bar baz\n")
            (goto-char 2)
            (expect (mark) :to-be nil)
-           (beginend--goto-begin-2)
+           (beginend-marks-test--goto-begin-2)
            (expect (mark) :to-be nil))))
 
       (it "if point is at point-min"
@@ -113,7 +116,7 @@
            (insert "foo bar baz\n")
            (goto-char (point-min))
            (expect (mark) :to-be nil)
-           (beginend--goto-begin-2)
+           (beginend-marks-test--goto-begin-2)
            (expect (mark) :to-be nil)))))
 
     (describe "when going to end"
@@ -123,7 +126,7 @@
            (insert "foo bar baz\n")
            (goto-char 2)
            (expect (mark) :to-be nil)
-           (beginend--goto-end-2)
+           (beginend-marks-test--goto-end-2)
            (expect (mark) :to-be nil))))
 
       (it "if point is at point-max"
@@ -132,8 +135,12 @@
            (insert "foo bar baz\n")
            (goto-char (point-max))
            (expect (mark) :to-be nil)
-           (beginend--goto-end-2)
+           (beginend-marks-test--goto-end-2)
            (expect (mark) :to-be nil)))))))
 
 (provide 'beginend-marks-test)
 ;;; beginend-marks-test.el ends here
+
+;; Local Variables:
+;; nameless-current-name: "beginend-marks-test"
+;; End:

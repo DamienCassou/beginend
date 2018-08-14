@@ -1,8 +1,11 @@
-;;; beginend-narrowing.el --- Tests beginend when narrowing is in effect         -*- lexical-binding: t; -*-
+;;; beginend-narrowing-test.el --- Tests beginend when narrowing is in effect         -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2017  Damien Cassou
 
 ;; Author: Damien Cassou <damien@cassou.me>
+;; Version: 2.0.0
+;; URL: https://github.com/DamienCassou/beginend
+;; Package-requires: ((emacs "24.4"))
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -19,7 +22,7 @@
 
 ;;; Commentary:
 
-;;
+;; Tests beginend when narrowing is in effect.
 
 ;;; Code:
 
@@ -32,12 +35,12 @@
 
 (define-error 'dont-call-me "This code should not have been called" 'error)
 
-(defun beginend--goto-begin ()
+(defun beginend-narrowing-test--goto-begin ()
   "Go to point 2."
   (beginend--double-tap-begin
    (goto-char 2)))
 
-(defun beginend--goto-end ()
+(defun beginend-narrowing-test--goto-end ()
   "Go to point 2."
   (beginend--double-tap-end
    (goto-char 2)))
@@ -51,28 +54,28 @@
     (with-temp-buffer
       (insert "foo bar baz\n")
       (narrow-to-region 3 5)
-      (beginend--goto-begin)
+      (beginend-narrowing-test--goto-begin)
       (expect (point) :to-be (point-min))))
 
   (it "goes to beginning if beginning is inside the narrowed region"
     (with-temp-buffer
       (insert "foo bar baz\n")
       (narrow-to-region 1 3)
-      (beginend--goto-begin)
+      (beginend-narrowing-test--goto-begin)
       (expect (point) :to-be 2)))
 
   (it "goes to point-max if end is outside the narrowed region"
     (with-temp-buffer
       (insert "foo bar baz\n")
       (narrow-to-region 3 5)
-      (beginend--goto-end)
+      (beginend-narrowing-test--goto-end)
       (expect (point) :to-be (point-max))))
 
   (it "goes to end if end is inside the narrowed region"
     (with-temp-buffer
       (insert "foo bar baz\n")
       (narrow-to-region 1 3)
-      (beginend--goto-end)
+      (beginend-narrowing-test--goto-end)
       (expect (point) :to-be 2)))
 
   (describe "does not move point"
@@ -81,7 +84,7 @@
         (insert "foo bar baz\n")
         (narrow-to-region 3 5)
         (goto-char (point-min))
-        (beginend--goto-begin)
+        (beginend-narrowing-test--goto-begin)
         (expect (point) :to-be (point-min))))
 
     (it "when going to end and end outside the narrowed region if point is already at point-max"
@@ -89,7 +92,7 @@
         (insert "foo bar baz\n")
         (narrow-to-region 3 5)
         (goto-char (point-max))
-        (beginend--goto-end)
+        (beginend-narrowing-test--goto-end)
         (expect (point) :to-be (point-max)))))
 
   (describe "does not mark"
@@ -98,7 +101,7 @@
         (insert "foo bar baz\n")
         (narrow-to-region 3 5)
         (goto-char (point-min))
-        (beginend--goto-begin)
+        (beginend-narrowing-test--goto-begin)
         (expect (mark) :to-be nil)))
 
     (it "when going to end and end outside the narrowed region if point is already at point-max"
@@ -106,7 +109,7 @@
         (insert "foo bar baz\n")
         (narrow-to-region 3 5)
         (goto-char (point-max))
-        (beginend--goto-end)
+        (beginend-narrowing-test--goto-end)
         (expect (mark) :to-be nil))))
 
   (describe "correctly detects out of bounds"
@@ -127,3 +130,7 @@
 
 (provide 'beginend-narrowing-test)
 ;;; beginend-narrowing-test.el ends here
+
+;; Local Variables:
+;; nameless-current-name: "beginend-narrowing-test"
+;; End:
