@@ -6,7 +6,7 @@
 ;;          Matus Goljer <matus.goljer@gmail.com>
 ;; Version: 2.0.0
 ;; URL: https://github.com/DamienCassou/beginend
-;; Package-Requires: ((emacs "24.4"))
+;; Package-Requires: ((emacs "25.3"))
 ;; Created: 01 Jun 2015
 
 ;; This file is not part of GNU Emacs.
