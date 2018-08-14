@@ -1,8 +1,11 @@
-;;; beginend-test.el --- Tests for dired support in beginend         -*- lexical-binding: t; -*-
+;;; beginend-dired-test.el --- Tests for dired support in beginend         -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2017  Damien Cassou
 
 ;; Author: Damien Cassou <damien@cassou.me>
+;; Version: 2.0.0
+;; URL: https://github.com/DamienCassou/beginend
+;; Package-requires: ((emacs "24.4"))
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -19,7 +22,7 @@
 
 ;;; Commentary:
 
-;;
+;; Tests for beginend in dired-mode.
 
 ;;; Code:
 
@@ -35,7 +38,7 @@
 
 (require 'seq)
 
-(defun beginend-create-dired-buffer (entries)
+(defun beginend-dired-test--create-buffer (entries)
   "Create and return a buffer resembling a dired one.
 
 ENTRIES is the file list.  The order is important.  ENTRIES are listed in that
@@ -87,7 +90,7 @@ If LOCATION is `eob', checks that point is at `point-max'.
 Other value are invalid.  In this case, this function signals an error."
   (beginend-dired-test 'beginend-dired-mode-goto-end location))
 
-(defmacro with-beginend-dired-test-buffer (entries &rest body)
+(defmacro beginend-dired-test--with-buffer (entries &rest body)
   "Create a temporary directory with ENTRIES and execute BODY.
 
 ENTRIES is a list of all filenames to display, in the same order, in the dired
@@ -95,49 +98,53 @@ buffer.
 
 Execute the forms in BODY within the dired buffer of the directory."
   (declare (indent 1))
-  `(with-current-buffer (beginend-create-dired-buffer ,entries)
+  `(with-current-buffer (beginend-dired-test--create-buffer ,entries)
      ,@body))
 
 (describe "beginend in a dired buffer"
   (it "ignores . and .. at the beginning"
-    (with-beginend-dired-test-buffer '("." ".." "dir1" "dir2")
+    (beginend-dired-test--with-buffer '("." ".." "dir1" "dir2")
       (beginend-dired-test-begin "dir1")
       (beginend-dired-test-end "dir2")))
 
   (it "ignores . and .. at the end"
-    (with-beginend-dired-test-buffer '("dir1" "dir2" "." "..")
+    (beginend-dired-test--with-buffer '("dir1" "dir2" "." "..")
       (beginend-dired-test-begin "dir1")
       (beginend-dired-test-end "dir2")))
 
   (it "ignores . at the beginning and .. at the end"
-    (with-beginend-dired-test-buffer '("." "dir1" "dir2" "..")
+    (beginend-dired-test--with-buffer '("." "dir1" "dir2" "..")
       (beginend-dired-test-begin "dir1")
       (beginend-dired-test-end "dir2")))
 
   (it "ignores . and .. in the middle"
-    (with-beginend-dired-test-buffer '("dir1" "." ".." "dir2")
+    (beginend-dired-test--with-buffer '("dir1" "." ".." "dir2")
       (beginend-dired-test-begin "dir1")
       (beginend-dired-test-end "dir2")))
 
   (it "ignores . and .. when they are hidden"
-    (with-beginend-dired-test-buffer '("dir1" "dir2")
+    (beginend-dired-test--with-buffer '("dir1" "dir2")
       (beginend-dired-test-begin "dir1")
       (beginend-dired-test-end "dir2")))
 
   (it "ignores . and .. when they are not hidden"
-    (with-beginend-dired-test-buffer '(".." "dir2" "." "dir1")
+    (beginend-dired-test--with-buffer '(".." "dir2" "." "dir1")
       (beginend-dired-test-begin 3)
       (beginend-dired-test-end 5)))
 
   (it "ignores . and .. when they are hidden and the directory is empty"
-    (with-beginend-dired-test-buffer '()
+    (beginend-dired-test--with-buffer '()
       (beginend-dired-test-begin 'bob)
       (beginend-dired-test-end 'eob)))
 
   (it "ignores . and .. when they are not hidden and the directory is empty"
-    (with-beginend-dired-test-buffer '("." "..")
+    (beginend-dired-test--with-buffer '("." "..")
       (beginend-dired-test-begin 'bob)
       (beginend-dired-test-end 'eob))))
 
 (provide 'beginend-dired-test)
 ;;; beginend-dired-test.el ends here
+
+;; Local Variables:
+;; nameless-current-name: "beginend-dired-test"
+;; End:

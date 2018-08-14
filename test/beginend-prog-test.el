@@ -3,6 +3,9 @@
 ;; Copyright (C) 2017  Damien Cassou
 
 ;; Author: Damien Cassou <damien@cassou.me>
+;; Version: 2.0.0
+;; URL: https://github.com/DamienCassou/beginend
+;; Package-requires: ((emacs "25"))
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -19,7 +22,7 @@
 
 ;;; Commentary:
 
-;;
+;; Tests for beginend in prog-mode.
 
 ;;; Code:
 
@@ -31,13 +34,7 @@
 
 (require 'font-lock)
 
-(eval-when-compile
-  (when (= emacs-major-version 24)
-    (defun font-lock-ensure ()
-      (font-lock-set-defaults)
-      (font-lock-default-fontify-buffer))))
-
-(describe "buttercup"
+(describe "beginend"
   (describe "in prog-mode"
     (before-each
       (spy-on #'beginend--prog-mode-code-position-p
@@ -111,3 +108,7 @@
 
 (provide 'beginend-prog-test)
 ;;; beginend-prog-test.el ends here
+
+;; Local Variables:
+;; nameless-current-name: "beginend-prog-test"
+;; End:
