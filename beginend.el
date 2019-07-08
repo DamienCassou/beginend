@@ -324,6 +324,24 @@ If optional argument P is present test at that point instead of `point'."
       (forward-line -1))
     (goto-char (line-end-position))))
 
+(declare-function outline-next-visible-heading "outline")
+(declare-function outline-on-heading-p "outline")
+
+(beginend-define-mode outline-mode
+  (progn
+    (unless (outline-on-heading-p)
+      (outline-next-visible-heading 1)))
+  (progn))
+
+(declare-function org-next-visible-heading "org")
+(declare-function org-on-heading-p "org")
+
+(beginend-define-mode org-mode
+  (progn
+    (unless (org-on-heading-p)
+      (org-next-visible-heading 1)))
+  (progn))
+
 
 
 ;;;###autoload
