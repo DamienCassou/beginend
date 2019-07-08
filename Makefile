@@ -1,33 +1,22 @@
-PACKAGE_BASENAME = beginend
+ELPA_DEPENDENCIES=package-lint assess buttercup m-buffer
 
-export EMACS_VERSION?=26.1
+ELPA_ARCHIVES=melpa gnu
 
-PACKAGE_TEST_ARCHIVES=gnu melpa
-PACKAGE_TEST_DEPS=assess buttercup
+TEST_ERT_FILES=$(wildcard test/beginend-*.el)
+LINT_CHECKDOC_FILES=$(wildcard *.el) ${TEST_ERT_FILES}
+LINT_PACKAGE_LINT_FILES=$(wildcard *.el) ${TEST_ERT_FILES}
+LINT_COMPILE_FILES=$(wildcard *.el) ${TEST_ERT_FILES}
 
-CURL = curl --fail --silent --show-error --insecure --location --retry 9 --retry-delay 9
-GITHUB = https://raw.githubusercontent.com
+makel.mk:
+	# Download makel
+	@if [ -f ../makel/makel.mk ]; then \
+		ln -s ../makel/makel.mk .; \
+	else \
+		curl \
+		--fail --silent --show-error --insecure --location \
+		--retry 9 --retry-delay 9 \
+		-O https://gitlab.petton.fr/DamienCassou/makel/raw/v0.5.1/makel.mk; \
+	fi
 
-export CI=false
-
-EMAKE_SHA1=3caabb0b5b2b0f42d242a18642d3d5d8b2320012
-
-emake.mk:
-	$(CURL) -O ${GITHUB}/vermiculus/emake.el/${EMAKE_SHA1}/emake.mk
-
-# Include emake.mk if present
--include emake.mk
-
-.PHONY: check lint test
-
-check: lint test
-
-# Run checkdoc and package-lint on test files too. I can't run compile
-# on test files because of
-# https://github.com/vermiculus/emake.el/issues/23
-lint-checkdoc: PACKAGE_LISP += ${PACKAGE_TESTS}
-lint-package-lint: PACKAGE_LISP += $(filter-out test/test-helper.el, ${PACKAGE_TESTS})
-
-lint: lint-checkdoc lint-package-lint compile
-
-test: test-buttercup
+# Include makel.mk if present
+-include makel.mk

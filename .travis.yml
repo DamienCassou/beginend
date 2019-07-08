@@ -14,4 +14,5 @@ matrix:
 
 script:
   - emacs --version
+  - make ci-dependencies
   - make check
