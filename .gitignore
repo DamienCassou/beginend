@@ -11,3 +11,4 @@ TAGS
 /emake.mk
 /.elpa.test
 /elpa
+/makel.mk
