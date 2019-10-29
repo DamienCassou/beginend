@@ -333,13 +333,15 @@ If optional argument P is present test at that point instead of `point'."
       (outline-next-visible-heading 1)))
   (progn))
 
-(declare-function org-next-visible-heading "org")
+(declare-function org-with-limited-levels "org-macs")
+(declare-function outline-next-visible-heading "outline")
 (declare-function org-on-heading-p "org")
 
 (beginend-define-mode org-mode
   (progn
     (unless (org-on-heading-p)
-      (org-next-visible-heading 1)))
+      (org-with-limited-levels
+       (outline-next-visible-heading 1))))
   (progn))
 
 
