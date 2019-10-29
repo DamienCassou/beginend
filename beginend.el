@@ -95,10 +95,8 @@ This is possible if buffer was narrowed after POINT was stored."
      ,@body))
 
 (defvar beginend-modes
-  '(
-    (mu4e-view-mode-hook . beginend-message-mode)
-    (mu4e-compose-mode-hook . beginend-message-mode)
-    )
+  '((mu4e-view-mode-hook . beginend-message-mode)
+    (mu4e-compose-mode-hook . beginend-message-mode))
   "List all beginend modes.
 Each element has the form (STD-MODE-HOOK . BEGINEND-MODE).  STD-MODE-HOOK
 is the standard mode hook (e.g., `dired-mode-hook') to which
