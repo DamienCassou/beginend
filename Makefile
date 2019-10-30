@@ -1,6 +1,6 @@
 ELPA_DEPENDENCIES=package-lint assess buttercup m-buffer
 
-ELPA_ARCHIVES=melpa gnu
+ELPA_ARCHIVES=melpa-stable gnu
 
 TEST_ERT_FILES=$(wildcard test/beginend-*.el)
 LINT_CHECKDOC_FILES=$(wildcard *.el) ${TEST_ERT_FILES}
