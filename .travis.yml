@@ -1,16 +1,11 @@
-language: emacs
-sudo: false
+language: nix
 
-before_install:
-  - curl -fsSkL https://gist.github.com/rejeep/ebcd57c3af83b049833b/raw > travis.sh && source ./travis.sh
-  - evm install emacs-${EMACS_VERSION}-travis --use --skip
+install:
+  - bash <(curl https://raw.githubusercontent.com/purcell/nix-emacs-ci/master/travis-install)
 
 env:
-  - EMACS_VERSION=25.3
-  - EMACS_VERSION=26.1
-
-matrix:
-  fast_finish: true
+  - EMACS_CI=emacs-25-3
+  - EMACS_CI=emacs-26-3
 
 script:
   - emacs --version
