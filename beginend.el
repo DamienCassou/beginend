@@ -342,6 +342,22 @@ If optional argument P is present test at that point instead of `point'."
        (outline-next-visible-heading 1))))
   (progn))
 
+(beginend-define-mode LaTeX-mode
+  (progn
+    (when (search-forward "\\begin{document}" nil t)
+      (skip-chars-forward "\t\n\r ")))
+  (progn
+    (when (search-backward "\\end{document}" nil t)
+      (skip-chars-backward "\t\n\r "))))
+
+(beginend-define-mode latex-mode
+  (progn
+    (when (search-forward "\\begin{document}" nil t)
+      (skip-chars-forward "\t\n\r ")))
+  (progn
+    (when (search-backward "\\end{document}" nil t)
+      (skip-chars-backward "\t\n\r "))))
+
 
 
 ;;;###autoload
