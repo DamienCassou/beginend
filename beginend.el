@@ -322,8 +322,8 @@ If optional argument P is present test at that point instead of `point'."
       (forward-line -1))
     (goto-char (line-end-position))))
 
-(declare-function outline-next-visible-heading "outline")
 (declare-function outline-on-heading-p "outline")
+(declare-function outline-next-visible-heading "outline")
 
 (beginend-define-mode outline-mode
   (progn
@@ -331,15 +331,14 @@ If optional argument P is present test at that point instead of `point'."
       (outline-next-visible-heading 1)))
   (progn))
 
-(declare-function org-with-limited-levels "org-macs")
-(declare-function outline-next-visible-heading "outline")
 (declare-function org-on-heading-p "org")
 
 (beginend-define-mode org-mode
   (progn
-    (unless (org-on-heading-p)
-      (org-with-limited-levels
-       (outline-next-visible-heading 1))))
+    (while (and (not (org-on-heading-p)) (not (eobp)))
+      (forward-line))
+    (when (eobp)
+      (setf (point) (point-min))))
   (progn))
 
 (beginend-define-mode LaTeX-mode
