@@ -400,4 +400,4 @@ and `compilation-mode' will have their \\[beginning-of-buffer] and
 
 ;;; beginend.el ends here
 
-;;  LocalWords:  beginend
+;;  LocalWords:  beginend whitespace
