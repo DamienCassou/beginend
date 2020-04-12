@@ -357,6 +357,15 @@ If optional argument P is present test at that point instead of `point'."
     (when (search-backward "\\end{document}" nil t)
       (skip-chars-backward "\t\n\r "))))
 
+(declare-function rg-next-file "rg")
+(declare-function rg-prev-file "rg")
+
+(beginend-define-mode rg-mode
+  (progn
+    (rg-next-file 1))
+  (progn
+    (rg-prev-file 1)))
+
 
 
 ;;;###autoload
