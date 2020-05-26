@@ -366,6 +366,15 @@ If optional argument P is present test at that point instead of `point'."
   (progn
     (rg-prev-file 1)))
 
+(beginend-define-mode epa-key-list-mode
+  (progn
+    (re-search-forward "^  [^ ] [^ ]" nil t)
+    (backward-char))
+  (progn
+    (forward-line -1)
+    (re-search-forward "^  [^ ] [^ ]" nil t)
+    (backward-char)))
+
 
 
 ;;;###autoload
