@@ -107,7 +107,7 @@ Adapting the [[https://github.com/jwiegley/use-package][use-package]] macro conf
   :ensure t
   :demand t
   :config  
-  (dolist (mode (cons 'beginend-global-mode (mapcar 'cdr beginend-modes)))
+  (dolist (mode (cons 'beginend-global-mode (mapcar #'cdr beginend-modes)))
           (diminish mode))
   (beginend-global-mode))
 #+END_SRC
