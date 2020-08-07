@@ -60,20 +60,47 @@ supported major modes (e.g., through ~beginend-dired-mode~).
 
 *** init.el example configuration
 
-By default, Beginend adds the ~" be"~ lighter to the modeline. You can use [[https://github.com/myrjola/diminish.el][diminish.el]] or [[https://savannah.nongnu.org/projects/delight][delight.el]] to turn this off for every minor mode Beginend defines by looping over the ~beginend-modes~ variable. Note that you will /also/ need to "turn off the lights" for ~beginend-global-mode~, which is not part of this list.
-
-In the following snippets, you can replace ~delight~ with ~diminish~ for the same results.
-
 Vanilla Emacs ~init.el~:
 
 #+BEGIN_SRC emacs-lisp
 (require 'beginend)
-(dolist (mode (cons 'beginend-global-mode (mapcar 'cdr beginend-modes)))
-        (diminish mode))
 (beginend-global-mode)
 #+END_SRC
 
 Configuration with the popular [[https://github.com/jwiegley/use-package][use-package]] macro:
+
+#+BEGIN_SRC emacs-lisp
+(use-package beginend 
+  :ensure t
+  :demand t
+  :config  
+  (beginend-global-mode))
+#+END_SRC
+
+** Cleaning up the modeline
+
+By default, beginend adds the ~be~ lighter to the modeline.
+
+You can use [[https://github.com/myrjola/diminish.el][diminish.el]] or [[https://savannah.nongnu.org/projects/delight][delight.el]] to turn this off for every minor
+mode beginend defines by looping over the ~beginend-modes~ variable.
+Note that you will /also/ need to "turn off the lights" for
+~beginend-global-mode~, which is not part of this list.
+
+If you usually diminish all minor modes, I recommend using [[https://melpa.org/#/minions][minions.el]].
+
+In the following snippets, you can replace ~delight~ with ~diminish~ for
+similar results.
+
+Adapting the vanilla Emacs ~init.el~:
+
+#+BEGIN_SRC emacs-lisp
+(require 'beginend)
+(dolist (mode (cons 'beginend-global-mode (mapcar #'cdr beginend-modes)))
+        (diminish mode))
+(beginend-global-mode)
+#+END_SRC
+
+Adapting the [[https://github.com/jwiegley/use-package][use-package]] macro configuration:
 
 #+BEGIN_SRC emacs-lisp
 (use-package beginend 
