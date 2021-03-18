@@ -23,17 +23,22 @@ In particular, these modes are supported:
 
 | *Mode*                | ~M-<~                   | ~M->~                      |
 |-----------------------+-------------------------+----------------------------|
+| *LaTeX-mode*          | =\begin{document}=      | =\end{document}=           |
 | *bs-mode*             | first buffer            | last buffer                |
 | *compilation-mode*    | first compilation error | last compilation error     |
 | *deft-mode*           | first match             | last match                 |
 | *dired-mode*          | first file              | last file                  |
-| *elfeed-mode*         | first feed              | last feed                  |
+| *elfeed-search-mode*  | first feed              | last feed                  |
+| *epa-key-list-mode*   | first key               | last key                   |
 | *ibuffer-mode*        | first buffer            | last buffer                |
+| *laTeX-mode*          | =\begin{document}=      | =\end{document}=           |
 | *magit-status-mode*   | first section           | last section               |
 | *message-mode*        | first body line         | last line before signature |
 | *notmuch-search-mode* | first thread            | last thread                |
 | *occur-mode*          | first match             | last match                 |
 | *org-agenda-mode*     | first agenda item       | last agenda item           |
+| *org-mode*            | first heading           | end of buffer              |
+| *outline-mode*        | first heading           | end of buffer              |
 | *prodigy-mode*        | first service           | last service               |
 | *prog-mode*           | after initial comments  | before final comments      |
 | *recentf-dialog-mode* | first most recent file  | last most recent file      |
