@@ -23,22 +23,22 @@ In particular, these modes are supported:
 
 | *Mode*                | ~M-<~                   | ~M->~                      |
 |-----------------------+-------------------------+----------------------------|
+| *bs-mode*             | first buffer            | last buffer                |
+| *compilation-mode*    | first compilation error | last compilation error     |
+| *deft-mode*           | first match             | last match                 |
 | *dired-mode*          | first file              | last file                  |
+| *elfeed-mode*         | first feed              | last feed                  |
+| *ibuffer-mode*        | first buffer            | last buffer                |
 | *magit-status-mode*   | first section           | last section               |
 | *message-mode*        | first body line         | last line before signature |
-| *prog-mode*           | after initial comments  | before final comments      |
-| *occur-mode*          | first match             | last match                 |
-| *ibuffer-mode*        | first buffer            | last buffer                |
-| *bs-mode*             | first buffer            | last buffer                |
-| *vc-dir-mode*         | first interesting file  | last interesting file      |
-| *recentf-dialog-mode* | first most recent file  | last most recent file      |
-| *org-agenda-mode*     | first agenda item       | last agenda item           |
-| *compilation-mode*    | first compilation error | last compilation error     |
 | *notmuch-search-mode* | first thread            | last thread                |
-| *elfeed-mode*         | first feed              | last feed                  |
+| *occur-mode*          | first match             | last match                 |
+| *org-agenda-mode*     | first agenda item       | last agenda item           |
 | *prodigy-mode*        | first service           | last service               |
-| *deft-mode*           | first match             | last match                 |
+| *prog-mode*           | after initial comments  | before final comments      |
+| *recentf-dialog-mode* | first most recent file  | last most recent file      |
 | *rg-mode*             | first match             | last match                 |
+| *vc-dir-mode*         | first interesting file  | last interesting file      |
 
 Finally, beginend does what you expect when your buffer is narrowed.
 
