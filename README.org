@@ -33,6 +33,7 @@ In particular, these modes are supported:
 | *ibuffer-mode*        | first buffer            | last buffer                |
 | *laTeX-mode*          | =\begin{document}=      | =\end{document}=           |
 | *magit-status-mode*   | first section           | last section               |
+| *magit-revision-mode* | first file              | end of buffer              |
 | *message-mode*        | first body line         | last line before signature |
 | *notmuch-search-mode* | first thread            | last thread                |
 | *occur-mode*          | first match             | last match                 |
