@@ -1,6 +1,6 @@
 ;;; beginend.el --- Redefine M-< and M-> for some modes   -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2015-2017 Damien Cassou
+;; Copyright (C) 2015-2021 Damien Cassou
 
 ;; Authors: Damien Cassou <damien@cassou.me>
 ;;          Matus Goljer <matus.goljer@gmail.com>
