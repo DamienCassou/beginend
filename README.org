@@ -23,22 +23,28 @@ In particular, these modes are supported:
 
 | *Mode*                | ~M-<~                   | ~M->~                      |
 |-----------------------+-------------------------+----------------------------|
-| *dired-mode*          | first file              | last file                  |
-| *magit-status-mode*   | first section           | last section               |
-| *message-mode*        | first body line         | last line before signature |
-| *prog-mode*           | after initial comments  | before final comments      |
-| *occur-mode*          | first match             | last match                 |
-| *ibuffer-mode*        | first buffer            | last buffer                |
+| *LaTeX-mode*          | =\begin{document}=      | =\end{document}=           |
 | *bs-mode*             | first buffer            | last buffer                |
-| *vc-dir-mode*         | first interesting file  | last interesting file      |
-| *recentf-dialog-mode* | first most recent file  | last most recent file      |
-| *org-agenda-mode*     | first agenda item       | last agenda item           |
 | *compilation-mode*    | first compilation error | last compilation error     |
-| *notmuch-search-mode* | first thread            | last thread                |
-| *elfeed-mode*         | first feed              | last feed                  |
-| *prodigy-mode*        | first service           | last service               |
 | *deft-mode*           | first match             | last match                 |
+| *dired-mode*          | first file              | last file                  |
+| *elfeed-search-mode*  | first feed              | last feed                  |
+| *epa-key-list-mode*   | first key               | last key                   |
+| *ibuffer-mode*        | first buffer            | last buffer                |
+| *laTeX-mode*          | =\begin{document}=      | =\end{document}=           |
+| *magit-status-mode*   | first section           | last section               |
+| *magit-revision-mode* | first file              | end of buffer              |
+| *message-mode*        | first body line         | last line before signature |
+| *notmuch-search-mode* | first thread            | last thread                |
+| *occur-mode*          | first match             | last match                 |
+| *org-agenda-mode*     | first agenda item       | last agenda item           |
+| *org-mode*            | first heading           | end of buffer              |
+| *outline-mode*        | first heading           | end of buffer              |
+| *prodigy-mode*        | first service           | last service               |
+| *prog-mode*           | after initial comments  | before final comments      |
+| *recentf-dialog-mode* | first most recent file  | last most recent file      |
 | *rg-mode*             | first match             | last match                 |
+| *vc-dir-mode*         | first interesting file  | last interesting file      |
 
 Finally, beginend does what you expect when your buffer is narrowed.
 
