@@ -1,11 +1,16 @@
 * Beginend
   #+BEGIN_HTML
       <p>
-        <a href="https://travis-ci.org/DamienCassou/beginend">
-          <img src="https://travis-ci.org/DamienCassou/beginend.svg?branch=master" alt="Build Status" />
+        <a href="https://stable.melpa.org/#/beginend">
+          <img alt="MELPA Stable" src="https://stable.melpa.org/packages/beginend-badge.svg"/>
         </a>
-        <a href='https://coveralls.io/github/DamienCassou/beginend?branch=master'>
-          <img src='https://coveralls.io/repos/github/DamienCassou/beginend/badge.svg?branch=master' alt='Coverage Status' />
+
+        <a href="https://melpa.org/#/beginend">
+          <img alt="MELPA" src="https://melpa.org/packages/beginend-badge.svg"/>
+        </a>
+
+        <a href="https://github.com/DamienCassou/beginend/actions">
+          <img alt="pipeline status" src="[[https://github.com/DamienCassou/beginend/actions/workflows/test.yml/badge.svg]]" />
         </a>
       </p>
   #+END_HTML
