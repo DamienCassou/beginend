@@ -10,7 +10,7 @@
         </a>
 
         <a href="https://github.com/DamienCassou/beginend/actions">
-          <img alt="pipeline status" src="[[https://github.com/DamienCassou/beginend/actions/workflows/test.yml/badge.svg]]" />
+          <img alt="pipeline status" src="https://github.com/DamienCassou/beginend/actions/workflows/test.yml/badge.svg" />
         </a>
       </p>
   #+END_HTML
