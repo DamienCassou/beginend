@@ -41,6 +41,7 @@ In particular, these modes are supported:
 | *magit-revision-mode* | first file              | end of buffer              |
 | *message-mode*        | first body line         | last line before signature |
 | *notmuch-search-mode* | first thread            | last thread                |
+| *nroam-mode*          | after the title         | before backlinks           |
 | *occur-mode*          | first match             | last match                 |
 | *org-agenda-mode*     | first agenda item       | last agenda item           |
 | *org-mode*            | first heading           | end of buffer              |

@@ -353,6 +353,16 @@ If optional argument P is present test at that point instead of `point'."
       (setf (point) (point-min))))
   (progn))
 
+(declare-function nroam-goto "nroam")
+
+(beginend-define-mode nroam-mode
+  (progn
+    (if (search-forward "#+title:" nil t)
+        (forward-line)
+      (setf (point) (point-min))))
+  (progn
+    (nroam-goto)))
+
 (beginend-define-mode LaTeX-mode
   (progn
     (when (search-forward "\\begin{document}" nil t)
