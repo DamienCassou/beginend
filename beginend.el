@@ -44,6 +44,8 @@
 ;;; Code:
 
 
+(require 'cl-lib) ; for (setf (point) …)
+
 ;;; Helper code
 
 (defun beginend--defkey (map command-begin command-end)
