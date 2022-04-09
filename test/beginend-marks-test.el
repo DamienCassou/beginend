@@ -3,7 +3,7 @@
 ;; Copyright (C) 2017-2022  Damien Cassou
 
 ;; Author: Damien Cassou <damien@cassou.me>
-;; Version: 2.0.1
+;; Version: 2.3.0
 ;; URL: https://github.com/DamienCassou/beginend
 ;; Package-requires: ((emacs "25.3"))
 
