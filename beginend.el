@@ -1,10 +1,10 @@
 ;;; beginend.el --- Redefine M-< and M-> for some modes   -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2015-2021 Damien Cassou
+;; Copyright (C) 2015-2022 Damien Cassou
 
 ;; Authors: Damien Cassou <damien@cassou.me>
 ;;          Matus Goljer <matus.goljer@gmail.com>
-;; Version: 2.0.1
+;; Version: 2.3.0
 ;; URL: https://github.com/DamienCassou/beginend
 ;; Package-Requires: ((emacs "25.3"))
 ;; Created: 01 Jun 2015
@@ -28,7 +28,7 @@
 
 ;; Redefine M-< and M-> for some modes.  For example,
 ;;
-;; - in dired mode, M-< (respectively M->) goes to first (respectively last)
+;; - in `dired-mode', M-< (respectively M->) goes to first (respectively last)
 ;;   file line
 ;;
 ;; - in message mode,
@@ -46,10 +46,16 @@
 
 (require 'cl-lib) ; for (setf (point) …)
 
+(defgroup beginend nil
+  "Customization group for beginend."
+  :group 'editing)
+
 ;;; Helper code
 
 (defun beginend--defkey (map command-begin command-end)
-  "Bind \[beginning-of-buffer] and \[end-of-buffer] in MAP to COMMAND-BEGIN and COMMAND-END."
+  "Bind COMMAND-BEGIN and COMMAND-END in MAP to standard keys.
+The keys used to bind the 2 commands are respectively
+\\[beginning-of-buffer] and \\[end-of-buffer]."
   (define-key map (vector 'remap 'beginning-of-buffer) command-begin)
   (define-key map (vector 'remap 'end-of-buffer) command-end))
 
@@ -129,6 +135,10 @@ BEGIN-BODY and END-BODY are two `progn' expressions passed to respectively
          (interactive)
          (beginend--double-tap-end
           ,@(cdr end-body)))
+       (put ',endfunc-name 'isearch-motion
+            (get 'end-of-buffer 'isearch-motion))
+       (put ',beginfunc-name 'isearch-motion
+            (get 'beginning-of-buffer 'isearch-motion))
        (defvar ,map-name
          (let ((map (make-sparse-keymap)))
            (beginend--defkey map #',beginfunc-name #',endfunc-name)
