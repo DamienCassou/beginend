@@ -135,6 +135,10 @@ BEGIN-BODY and END-BODY are two `progn' expressions passed to respectively
          (interactive)
          (beginend--double-tap-end
           ,@(cdr end-body)))
+       (put ',endfunc-name 'isearch-motion
+            (get 'end-of-buffer 'isearch-motion))
+       (put ',beginfunc-name 'isearch-motion
+            (get 'beginning-of-buffer 'isearch-motion))
        (defvar ,map-name
          (let ((map (make-sparse-keymap)))
            (beginend--defkey map #',beginfunc-name #',endfunc-name)
