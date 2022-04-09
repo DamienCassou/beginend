@@ -1,6 +1,6 @@
 ;;; beginend-dired-test.el --- Tests for dired support in beginend         -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2017-2021  Damien Cassou
+;; Copyright (C) 2017-2022  Damien Cassou
 
 ;; Author: Damien Cassou <damien@cassou.me>
 ;; Version: 2.0.1

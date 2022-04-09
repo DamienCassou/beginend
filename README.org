@@ -170,4 +170,4 @@ meaningful end of buffer starting from real end (i.e., ~point-max~).
 
 ** License
 
-See [[file:COPYING][COPYING]]. Copyright (c) 2017-2021 [[mailto:damien@cassou.me][Damien Cassou]] and [[mailto:matus.goljer@gmail.com][Matus Goljer]].
+See [[file:COPYING][COPYING]]. Copyright (c) 2017-2022 [[mailto:damien@cassou.me][Damien Cassou]] and [[mailto:matus.goljer@gmail.com][Matus Goljer]].

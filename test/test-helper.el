@@ -1,6 +1,6 @@
 ;;; test-helper.el --- Helper code for beginend tests  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2017-2021  Damien Cassou
+;; Copyright (C) 2017-2022  Damien Cassou
 
 ;; Author: Damien Cassou <damien@cassou.me>
 
