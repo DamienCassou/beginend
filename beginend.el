@@ -28,7 +28,7 @@
 
 ;; Redefine M-< and M-> for some modes.  For example,
 ;;
-;; - in dired mode, M-< (respectively M->) goes to first (respectively last)
+;; - in `dired-mode', M-< (respectively M->) goes to first (respectively last)
 ;;   file line
 ;;
 ;; - in message mode,
@@ -46,10 +46,16 @@
 
 (require 'cl-lib) ; for (setf (point) …)
 
+(defgroup beginend nil
+  "Customization group for beginend."
+  :group 'editing)
+
 ;;; Helper code
 
 (defun beginend--defkey (map command-begin command-end)
-  "Bind \[beginning-of-buffer] and \[end-of-buffer] in MAP to COMMAND-BEGIN and COMMAND-END."
+  "Bind COMMAND-BEGIN and COMMAND-END in MAP to standard keys.
+The keys used to bind the 2 commands are respectively
+\\[beginning-of-buffer] and \\[end-of-buffer]."
   (define-key map (vector 'remap 'beginning-of-buffer) command-begin)
   (define-key map (vector 'remap 'end-of-buffer) command-end))
 
