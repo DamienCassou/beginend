@@ -323,9 +323,9 @@ If optional argument P is present test at that point instead of `point'."
           (eq (char-syntax (char-after p)) ?<)
           (let ((s (car (syntax-after p))))
             (when s
-              (or (and (/= 0 (logand (lsh 1 16) s))
+              (or (and (/= 0 (logand (ash 1 16) s))
                        (nth 4 (syntax-ppss (+ p 2))))
-                  (and (/= 0 (logand (lsh 1 17) s))
+                  (and (/= 0 (logand (ash 1 17) s))
                        (nth 4 (syntax-ppss (+ p 1)))))))))))
 
 (defun beginend--prog-mode-code-position-p ()
