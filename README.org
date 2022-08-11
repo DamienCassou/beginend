@@ -34,6 +34,7 @@ In particular, these modes are supported:
 | *deft-mode*           | first match             | last match                 |
 | *dired-mode*          | first file              | last file                  |
 | *elfeed-search-mode*  | first feed              | last feed                  |
+| *elfeed-show-mode*    | first body line         | end of buffer              |
 | *epa-key-list-mode*   | first key               | last key                   |
 | *ibuffer-mode*        | first buffer            | last buffer                |
 | *laTeX-mode*          | =\begin{document}=      | =\end{document}=           |
