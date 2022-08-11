@@ -270,6 +270,12 @@ BEGIN-BODY and END-BODY are two `progn' expressions passed to respectively
   (progn
     (forward-line -1)))
 
+(beginend-define-mode elfeed-show-mode
+  (progn
+    (re-search-forward "^Link:")
+    (forward-line))
+  (progn))
+
 (declare-function prodigy-first "prodigy")
 (declare-function prodigy-last "prodigy")
 
