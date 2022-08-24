@@ -44,8 +44,6 @@
 ;;; Code:
 
 
-(require 'cl-lib) ; for (setf (point) …)
-
 (defgroup beginend nil
   "Customization group for beginend."
   :group 'editing)
@@ -307,9 +305,9 @@ BEGIN-BODY and END-BODY are two `progn' expressions passed to respectively
     (condition-case nil
         (while (not (or (eobp) (magit-section-match 'magit-file-section)))
           (magit-section-forward-sibling))
-      (user-error (setf (point) (point-min)))))
+      (user-error (goto-char (point-min)))))
   (progn
-    (setf (point) (line-beginning-position))))
+    (goto-char (line-beginning-position))))
 
 (beginend-define-mode deft-mode
   (progn
@@ -368,7 +366,7 @@ If optional argument P is present test at that point instead of `point'."
     (while (and (not (org-on-heading-p)) (not (eobp)))
       (forward-line))
     (when (eobp)
-      (setf (point) (point-min))))
+      (goto-char (point-min))))
   (progn))
 
 (declare-function nroam-goto "nroam")
@@ -377,7 +375,7 @@ If optional argument P is present test at that point instead of `point'."
   (progn
     (if (search-forward "#+title:" nil t)
         (forward-line)
-      (setf (point) (point-min))))
+      (goto-char (point-min))))
   (progn
     (nroam-goto)))
 
