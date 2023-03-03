@@ -28,4 +28,7 @@
 (when (require 'undercover nil t)
   (undercover "*.el"))
 
+(with-eval-after-load 'comp
+  (push 'message native-comp-never-optimize-functions))
+
 ;;; test-helper.el ends here
