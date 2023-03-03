@@ -1,6 +1,6 @@
 ;;; beginend-prog-test.el --- Tests for beginend in prog-mode  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2017-2022  Damien Cassou
+;; Copyright (C) 2017-2023  Damien Cassou
 
 ;; Author: Damien Cassou <damien@cassou.me>
 ;; Version: 2.3.0
