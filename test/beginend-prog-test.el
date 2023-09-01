@@ -82,10 +82,18 @@
         (expect (beginend--prog-mode-code-position-p) :to-be-truthy)))
 
     (describe "returns nil"
-      (it "for a line of comment"
+      (it "for a comment line"
         (with-temp-buffer
           (emacs-lisp-mode)
           (insert ";; (defvar foo 3)\n")
+          (font-lock-ensure)
+          (goto-char (point-min))
+          (expect (beginend--prog-mode-code-position-p) :to-be nil)))
+
+      (it "for a docstring"
+        (with-temp-buffer
+          (emacs-lisp-mode)
+          (insert "\"This is a file-level docstring.\"\n")
           (font-lock-ensure)
           (goto-char (point-min))
           (expect (beginend--prog-mode-code-position-p) :to-be nil)))

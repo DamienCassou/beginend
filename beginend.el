@@ -332,10 +332,27 @@ If optional argument P is present test at that point instead of `point'."
                   (and (/= 0 (logand (ash 1 17) s))
                        (nth 4 (syntax-ppss (+ p 1)))))))))))
 
+(defun beginend--point-is-in-string-p (&optional p)
+  "Return non-nil if point is in string.
+
+If optional argument P is present test at that point instead of `point'."
+  (setq p (or p (point)))
+  (ignore-errors
+    (save-excursion
+      (or (nth 3 (syntax-ppss p))
+          (eq (char-syntax (char-after p)) ?\")
+          (let ((s (car (syntax-after p))))
+            (when s
+              (or (and (/= 0 (logand (ash 1 16) s))
+                       (nth 3 (syntax-ppss (+ p 2))))
+                  (and (/= 0 (logand (ash 1 17) s))
+                       (nth 3 (syntax-ppss (+ p 1)))))))))))
+
 (defun beginend--prog-mode-code-position-p ()
   "Return non-nil if point, at beginning of line, is inside code."
   (not
    (or (beginend--point-is-in-comment-p)
+       (beginend--point-is-in-string-p)
        (= (point) (line-end-position))
        (looking-at (char-to-string ?\f))))) ;; form-feed (^L)
 
