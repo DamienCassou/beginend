@@ -59,7 +59,6 @@
       (with-temp-buffer
         (insert "line1\nline2\nline3\nline4\nline5\nline6\nline7\n")
         (goto-char 2)
-        ;; workaround for https://github.com/jorgenschaefer/emacs-buttercup/issues/84
         (beginend-prog-mode-goto-beginning)
         (expect (line-number-at-pos) :to-be 3)
         (expect (point) :to-be (line-beginning-position))))
@@ -68,7 +67,6 @@
       (with-temp-buffer
         (insert "line1\nline2\nline3\nline4\nline5\nline6\nline7\n")
         (goto-char 2)
-        ;; workaround for https://github.com/jorgenschaefer/emacs-buttercup/issues/84
         (beginend-prog-mode-goto-end)
         (expect (line-number-at-pos) :to-be 5)
         (expect (point) :to-be (line-end-position)))))
