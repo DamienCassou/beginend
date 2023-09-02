@@ -3,9 +3,9 @@ ELPA_DEPENDENCIES=package-lint assess buttercup m-buffer
 ELPA_ARCHIVES=melpa-stable gnu
 
 TEST_BUTTERCUP_OPTIONS=test
-LINT_CHECKDOC_FILES=$(wildcard *.el) ${TEST_ERT_FILES}
-LINT_PACKAGE_LINT_FILES=$(wildcard *.el) ${TEST_ERT_FILES}
-LINT_COMPILE_FILES=$(wildcard *.el) ${TEST_ERT_FILES}
+LINT_CHECKDOC_FILES=$(wildcard *.el)
+LINT_PACKAGE_LINT_FILES=$(wildcard *.el)
+LINT_COMPILE_FILES=$(wildcard *.el)
 
 makel.mk:
 	# Download makel
@@ -15,7 +15,7 @@ makel.mk:
 		curl \
 		--fail --silent --show-error --insecure --location \
 		--retry 9 --retry-delay 9 \
-		-O https://github.com/damienCassou/makel/raw/v0.8.0/makel.mk; \
+		-O https://github.com/DamienCassou/makel/raw/v0.8.0/makel.mk; \
 	fi
 
 # Include makel.mk if present
